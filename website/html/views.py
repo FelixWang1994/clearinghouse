@@ -88,7 +88,7 @@ class LoggedInButFailedGetGeniUserError(Exception):
   Indicates that a function tried to get a GeniUser record, and failed;
   while having passed the @login_required decorator. This means that a
   DjangoUser is logged in, but there is no corresponding GeniUser record.
-  
+
   This exception should only be thrown from _validate_and_get_geniuser,
   and caught by methods with @login_required decorators.
   """
@@ -119,7 +119,7 @@ ACCEPTDONATIONS_STATE_PUBKEY = _state_key_file_to_publickey_string("acceptdonati
 def error(request):
   """
   <Purpose>
-    If a OpenID/OAuth backend itself has an error(not a user or Seattle Clearinghouse's fault) 
+    If a OpenID/OAuth backend itself has an error(not a user or Seattle Clearinghouse's fault)
     a user will get redirected here.  This can happen if the backend rejects the user or from
     user cancelation.
 
@@ -136,14 +136,14 @@ def error(request):
   <Returns>
     An HTTP response object that represents the error page.
   """
-  #Retrieve information which caused an error 
+  #Retrieve information which caused an error
   messages = get_messages(request)
   info =''
   try:
     user = _validate_and_get_geniuser(request)
     return profile(request, info, info, messages)
   except:
-    return _show_login(request, 'accounts/login.html', {'messages' : messages}) 
+    return _show_login(request, 'accounts/login.html', {'messages' : messages})
 
 
 
@@ -196,7 +196,7 @@ def auto_register(request,backend=None,error_msgs=''):
     If a user passes in a valid username he continues the pipeline and moves
     forward in the auto register process.
   """
-  # Check if a username is provided 
+  # Check if a username is provided
   username_form = forms.AutoRegisterForm()
   if request.method == 'POST' and request.POST.get('username'):
     name = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
@@ -209,7 +209,7 @@ def auto_register(request,backend=None,error_msgs=''):
       except DoesNotExistError:
         request.session['saved_username'] = request.POST['username']
         backend = request.session[name]['backend']
-        return redirect('socialauth_complete', backend=backend)  
+        return redirect('socialauth_complete', backend=backend)
   name = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
   backend=request.session[name]['backend']
   return render_to_response('accounts/auto_register.html', {'backend' : backend, 'error_msgs' : error_msgs, 'username_form' : username_form}, RequestContext(request))
@@ -226,11 +226,11 @@ def profile(request, info="", error_msg="", messages=""):
     Display information about the user account.
     This method requires the request to represent a valid logged
     in user. See the top-level comment about the @login_required()
-    decorator to achieve this property.  User account is editable through this 
+    decorator to achieve this property.  User account is editable through this
     method.
   <Arguments>
     request:
-      An HTTP request object.  
+      An HTTP request object.
     info:
       Additional message to display at the top of the page in a green box.
     error_msg:
@@ -248,11 +248,11 @@ def profile(request, info="", error_msg="", messages=""):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   email_form = forms.gen_edit_user_form(instance=user)
   affiliation_form = forms.gen_edit_user_form(instance=user)
   password_form = forms.EditUserPasswordForm()
-    
+
   if request.method == 'POST':
     if 'affiliation' in request.POST:
        affiliation_form = forms.gen_edit_user_form(('affiliation',), request.POST, instance=user)
@@ -272,7 +272,7 @@ def profile(request, info="", error_msg="", messages=""):
          new_password = password_form.cleaned_data['password1']
          interface.change_user_password(user, new_password)
          info ="Password has been successfully changed"
-  
+
   username = user.username
   affiliation = user.affiliation
   email = user.email
@@ -282,7 +282,7 @@ def profile(request, info="", error_msg="", messages=""):
   #port_range = interface.get_useable_ports()
   #port_range_min = port_range[0]
   #port_range_max = port_range[-1]
-  
+
   return render_to_response('control/profile.html',
                             {'email_form' : email_form,
                              'affiliation_form' : affiliation_form,
@@ -301,9 +301,6 @@ def profile(request, info="", error_msg="", messages=""):
                             context_instance=RequestContext(request))
 
 
-
-
-
 def register(request):
   try:
     # check to see if a user is already logged in. if so, redirect them to profile.
@@ -312,10 +309,10 @@ def register(request):
     pass
   else:
     return HttpResponseRedirect(reverse("profile"))
-  
+
   page_top_errors = []
   if request.method == 'POST':
-    
+
     #TODO: what if the form data isn't in the POST request? we need to check for this.
     form = forms.GeniUserCreationForm(request.POST, request.FILES)
     # Calling the form's is_valid() function causes all form "clean_..." methods to be checked.
@@ -327,16 +324,16 @@ def register(request):
       affiliation = form.cleaned_data['affiliation']
       email = form.cleaned_data['email']
       pubkey = form.cleaned_data['pubkey']
-      
+
       try:
         validations.validate_username_and_password_different(username, password)
       except ValidationError, err:
         page_top_errors.append(str(err))
-      
+
       # NOTE: gen_upload_choice turns out to be a *string* when retrieved, hence '2'
       if form.cleaned_data['gen_upload_choice'] == '2' and pubkey == None:
         page_top_errors.append("Please select a public key to upload.")
-      
+
       # only proceed with registration if there are no validation errors
       if page_top_errors == []:
         try:
@@ -350,10 +347,10 @@ def register(request):
                              {'msg' : "Username %s has been successfully registered." % (user.username)})
   else:
     form = forms.GeniUserCreationForm()
-  return render_to_response('accounts/register.html', 
+  return render_to_response('accounts/register.html',
           {'form' : form, 'page_top_errors' : page_top_errors},
           context_instance=RequestContext(request))
-  
+
 
 
 
@@ -366,7 +363,7 @@ def _show_login(request, ltemplate, template_dict, form=None):
     <Arguments>
         request:
             An HTTP request object to use to populate the form
-            
+
         ltemplate:
            The login template name to use for the login form. Right now
            this can be one of 'accounts/simplelogin.html' and
@@ -385,7 +382,7 @@ def _show_login(request, ltemplate, template_dict, form=None):
         None.
 
     <Side Effects>
-        None. 
+        None.
 
     <Returns>
         An HTTP response object that represents the login page on
@@ -398,12 +395,12 @@ def _show_login(request, ltemplate, template_dict, form=None):
         #if not request.session.test_cookie_worked():
         request.session.set_test_cookie()
     template_dict['form'] = form
-    return render_to_response(ltemplate, template_dict, 
+    return render_to_response(ltemplate, template_dict,
             context_instance=RequestContext(request))
-  
-  
-  
-  
+
+
+
+
 
 def login(request):
   try:
@@ -417,7 +414,7 @@ def login(request):
   ltemplate = 'accounts/login.html'
   if request.method == 'POST':
     form = AuthenticationForm(request.POST)
-    
+
     if not request.session.test_cookie_worked():
       request.session.set_test_cookie()
       return _show_login(request, ltemplate, {'err' : "Please enable your cookies and try again."}, form)
@@ -429,12 +426,12 @@ def login(request):
       interface.login_user(request, request.POST['username'], request.POST['password'])
     except DoesNotExistError:
       return _show_login(request, ltemplate, {'err' : "Wrong username or password."}, form)
-      
+
     # only clear out the cookie if we actually authenticate and login ok
     request.session.delete_test_cookie()
-    
+
     return HttpResponseRedirect(reverse("profile"))
-    
+
   # request type is GET, show a fresh login page
   return _show_login(request, ltemplate, {})
 
@@ -457,8 +454,19 @@ def help(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   return render_to_response('control/help.html', {'username': user.username},
+          context_instance=RequestContext(request))
+
+
+@login_required
+def registerexperiment(request):
+  try:
+    user = _validate_and_get_geniuser(request)
+  except LoggedInButFailedGetGeniUserError:
+    return _show_failed_get_geniuser_page(request)
+
+  return render_to_response('control/registerexperiment.html', {'username': user.username},
           context_instance=RequestContext(request))
 
 
@@ -466,7 +474,7 @@ def help(request):
 
 
 def accounts_help(request):
-  return render_to_response('accounts/help.html', {}, 
+  return render_to_response('accounts/help.html', {},
           context_instance=RequestContext(request))
 
 
@@ -479,18 +487,18 @@ def mygeni(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   total_vessel_credits = interface.get_total_vessel_credits(user)
   num_acquired_vessels = len(interface.get_acquired_vessels(user))
   avail_vessel_credits = interface.get_available_vessel_credits(user)
-  
+
   if num_acquired_vessels > total_vessel_credits:
     percent_total_used = 100
     over_vessel_credits = num_acquired_vessels - total_vessel_credits
   else:
     percent_total_used = int((num_acquired_vessels * 1.0 / total_vessel_credits * 1.0) * 100.0)
     over_vessel_credits = 0
-  
+
   # total_vessel_credits, percent_total_used, avail_vessel_credits
   return request_ro_response('control/mygeni.html',
                             {'username' : user.username,
@@ -511,7 +519,7 @@ def myvessels(request, get_form=False, action_summary="", action_detail="", remo
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # get_form of None means don't show the form to acquire vessels.
   if interface.get_available_vessel_credits(user) == 0:
     get_form = None
@@ -524,7 +532,7 @@ def myvessels(request, get_form=False, action_summary="", action_detail="", remo
   # this user's used vessels
   my_vessels_raw = interface.get_acquired_vessels(user)
   my_vessels = interface.get_vessel_infodict_list(my_vessels_raw)
-  
+
   # this user's number of donations, max vessels, total vessels and free credits
   my_donations = interface.get_donations(user)
   my_max_vessels = interface.get_available_vessel_credits(user)
@@ -551,7 +559,7 @@ def myvessels(request, get_form=False, action_summary="", action_detail="", remo
                              'action_summary' : action_summary,
                              'action_detail' : action_detail,
                              'my_donations' : len(my_donations),
-                             'my_max_vessels' : my_max_vessels, 
+                             'my_max_vessels' : my_max_vessels,
                              'free_vessel_credits' : my_free_vessel_credits,
                              'total_vessel_credits' : my_total_vessel_credits,
                              'remove_summary' : remove_summary},
@@ -567,9 +575,9 @@ def getdonations(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   domain = "https://" + request.get_host()
-  
+
   return render_to_response('control/getdonations.html',
                             {'username' : user.username,
                              'domain' : domain},
@@ -585,22 +593,22 @@ def get_resources(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # the request must be via POST. if not, bounce user back to My Vessels page
   if not request.method == 'POST':
     return myvessels(request)
-  
+
   # try and grab form from POST. if it can't, bounce user back to My Vessels page
   get_form = forms.gen_get_form(user, request.POST)
-  
+
   action_summary = ""
   action_detail = ""
   keep_get_form = False
-  
+
   if get_form.is_valid():
     vessel_num = get_form.cleaned_data['num']
     vessel_type = get_form.cleaned_data['env']
-    
+
     try:
       acquired_vessels = interface.acquire_vessels(user, vessel_num, vessel_type)
     except UnableToAcquireResourcesError, err:
@@ -616,17 +624,17 @@ def get_resources(request):
       keep_get_form = True
   else:
     keep_get_form = True
-  
+
   if keep_get_form == True:
     # return the original get_form, since the form wasn't valid (or there were errors)
     return myvessels(request, get_form, action_summary=action_summary, action_detail=action_detail)
   else:
     # return a My Vessels page with the updated vessels/vessel acquire details/errors
     return myvessels(request, False, action_summary=action_summary, action_detail=action_detail)
-  
-  
-  
-  
+
+
+
+
 
 @login_required
 def del_resource(request):
@@ -634,20 +642,20 @@ def del_resource(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # the request must be via POST. if not, bounce user back to My Vessels page
   if not request.method == 'POST':
     return myvessels(request)
 
   if not request.POST['handle']:
     return myvessels(request)
-  
-  # vessel_handle needs to be a list (even though we only add one handle), 
+
+  # vessel_handle needs to be a list (even though we only add one handle),
   # since get_vessel_list expects a list.
   vessel_handle = []
   vessel_handle.append(request.POST['handle'])
   remove_summary = ""
-  
+
   try:
     # convert handle to vessel
     vessel_to_release = interface.get_vessel_list(vessel_handle)
@@ -661,7 +669,7 @@ def del_resource(request):
     except InvalidRequestError, err:
       remove_summary = "Unable to remove vessel. The vessel does not belong"
       remove_summary += " to you any more (maybe it expired?). " + str(err)
-  
+
   return myvessels(request, remove_summary=remove_summary)
 
 
@@ -675,18 +683,18 @@ def del_all_resources(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # the request must be via POST. if not, bounce user back to My Vessels page
   if not request.method == 'POST':
     return myvessels(request)
-  
+
   remove_summary = ""
 
   try:
     interface.release_all_vessels(user)
   except InvalidRequestError, err:
     remove_summary = "Unable to release all vessels: " + str(err)
-  
+
   return myvessels(request, remove_summary=remove_summary)
 
 
@@ -700,17 +708,17 @@ def renew_resource(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # The request must be via POST. If not, bounce user back to My Vessels page.
   if not request.method == 'POST':
     return myvessels(request)
-  
+
   if not request.POST.get('handle', ''):
     return myvessels(request)
-  
+
   action_summary = ""
   action_detail = ""
-  
+
   try:
     # Convert handle to vessel object.
     # Raises a DoesNotExistError if the vessel does not exist. This is more
@@ -731,7 +739,7 @@ def renew_resource(request):
       action_summary = "Unable to renew vessel: you are currently over your"
       action_summary += " vessel credit limit."
       action_detail += str(err)
-  
+
   return myvessels(request, False, action_summary=action_summary, action_detail=action_detail)
 
 
@@ -744,14 +752,14 @@ def renew_all_resources(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   # The request must be via POST. If not, bounce user back to My Vessels page.
   if not request.method == 'POST':
     return myvessels(request)
-  
+
   action_summary = ""
   action_detail = ""
-  
+
   try:
     interface.renew_all_vessels(user)
   except InvalidRequestError, err:
@@ -760,7 +768,7 @@ def renew_all_resources(request):
     action_summary = "Unable to renew vessels: you are currently over your"
     action_summary += " vessel credit limit."
     action_detail += str(err)
-  
+
   return myvessels(request, False, action_summary=action_summary, action_detail=action_detail)
 
 
@@ -786,27 +794,27 @@ def change_key(request):
     interface.change_user_keys(user, pubkey=None)
     msg = "Your new keys have been generated. You should download them now."
     return profile(request, msg)
-    
+
   else:
     file = request.FILES.get('pubkey', None)
     if file is None:
-      msg = "You didn't select a public key file to upload." 
+      msg = "You didn't select a public key file to upload."
       return profile(request, info, msg)
 
-    
+
     if file.size == 0 or file.size > forms.MAX_PUBKEY_UPLOAD_SIZE:
-      msg = "Invalid file uploaded. The file size limit is " 
+      msg = "Invalid file uploaded. The file size limit is "
       msg += str(forms.MAX_PUBKEY_UPLOAD_SIZE) + " bytes."
-      return profile(request, info, msg) 
-          
+      return profile(request, info, msg)
+
     pubkey = file.read()
-    
+
     try:
       validations.validate_pubkey_string(pubkey)
     except ValidationError:
       msg = "Invalid public key uploaded."
       return profile(request, info, msg)
-    
+
     # If we made it here, the uploaded key is good.
     interface.change_user_keys(user, pubkey=pubkey)
     msg = "Your public key has been successfully changed."
@@ -822,7 +830,7 @@ def api_info(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   if request.method == 'GET':
     return render_to_response('control/api_info.html',
                               {'username' : user.username,
@@ -833,8 +841,8 @@ def api_info(request):
   # This is a POST, so it should be generation of an API key.
   if not request.POST.get('generate_api_key', False):
     msg = "Sorry, we didn't understand your request."
-    return profile(request, info, msg) 
-    
+    return profile(request, info, msg)
+
   interface.regenerate_api_key(user)
   msg = "Your API key has been regenerated. Your old one will no longer work."
   msg += " You should update any places you are using the API key"
@@ -853,7 +861,7 @@ def del_priv(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   if user.user_privkey == "":
     msg = "Your private key has already been deleted."
   else:
@@ -872,7 +880,7 @@ def priv_key(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   response = HttpResponse(user.user_privkey, content_type='text/plain')
   response['Content-Disposition'] = 'attachment; filename=' + \
           str(user.username) + '.privatekey'
@@ -889,7 +897,7 @@ def pub_key(request):
     user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
     return _show_failed_get_geniuser_page(request)
-  
+
   response = HttpResponse(user.user_pubkey, content_type='text/plain')
   response['Content-Disposition'] = 'attachment; filename=' + \
             str(user.username) + '.publickey'
@@ -912,9 +920,9 @@ def download(request, username):
   templatedict['validuser'] = validuser
   templatedict['domain'] = "https://" + request.get_host()
   # I need to build a URL for android to download the installer from.   (The
-  # same installer is downloaded from the Google Play store for all users.) 
-  # The URL is escaped twice (ask Akos why) and inserted in the referrer 
-  # information in the URL.   
+  # same installer is downloaded from the Google Play store for all users.)
+  # The URL is escaped twice (ask Akos why) and inserted in the referrer
+  # information in the URL.
   #templatedict['android_installer_link'] = urllib.quote(urllib.quote(domain,safe=''),safe='')
 
   return render_to_response('download/installers.html', templatedict,
@@ -929,32 +937,32 @@ def build_android_installer(request, username):
   <Purpose>
     Allows the user to download a Android distribution of Seattle that will
     donate resources to user with 'username'.
-  
+
   <Arguments>
     request:
       Django HttpRequest object
-       
+
     username:
       A string representing the GENI user to which the installer will donate
       resources.
-  
+
   <Exceptions>
     None
-  
+
   <Side Effects>
     None
-  
+
   <Returns>
     On failure, returns an HTTP response with a description of the error. On
     success, redirects the user to download the installer.
   """
-  
+
   success, return_value = _build_installer(username, "android")
-  
+
   if not success:
     error_response = return_value
     return error_response
-  
+
   installer_url = return_value
   return HttpResponseRedirect(installer_url)
 
@@ -967,32 +975,32 @@ def build_win_installer(request, username):
   <Purpose>
     Allows the user to download a Windows distribution of Seattle that will
     donate resources to user with 'username'.
-  
+
   <Arguments>
     request:
       Django HttpRequest object
-       
+
     username:
       A string representing the GENI user to which the installer will donate
       resources.
-  
+
   <Exceptions>
     None
-  
+
   <Side Effects>
     None
-  
+
   <Returns>
     On failure, returns an HTTP response with a description of the error. On
     success, redirects the user to download the installer.
   """
-  
+
   success, return_value = _build_installer(username, "windows")
-  
+
   if not success:
     error_response = return_value
     return error_response
-  
+
   installer_url = return_value
   return HttpResponseRedirect(installer_url)
 
@@ -1081,26 +1089,26 @@ def _build_installer(username, platform):
   <Purpose>
     Builds an installer for the given platform that will donate resources to
     the user with the given username.
-  
+
   <Arguments>
     username:
       A string representing the GENI user to which the installer will donate
       resources.
-      
+
     platform:
       A string representing the platform for which to build the installer.
       Options include 'windows', 'linux', or 'mac'.
-  
+
   <Exceptions>
     None
-  
+
   <Side Effects>
     None
-  
+
   <Returns>
     On success, returns (True, installer_url) where installer_url is URL from
     which the installer may be downloaded.
-    
+
     On failure, returns (False, error_response) where error_repsponse is an
     HttpResponse which specifies what went wrong.
   """
@@ -1113,14 +1121,14 @@ def _build_installer(username, platform):
 
   try:
     xmlrpc_proxy = xmlrpclib.ServerProxy(settings.SEATTLECLEARINGHOUSE_INSTALLER_BUILDER_XMLRPC)
-    
+
     vessel_list = [{'percentage': 80, 'owner': 'owner', 'users': ['user']}]
-    
+
     user_data = {
       'owner': {'public_key': user.donor_pubkey},
       'user': {'public_key': ACCEPTDONATIONS_STATE_PUBKEY},
     }
-    
+
     build_results = xmlrpc_proxy.build_installers(vessel_list, user_data)
   except:
     error_response = HttpResponse("Failed to build installer.")

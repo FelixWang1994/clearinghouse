@@ -47,8 +47,8 @@ SEATTLECLEARINGHOUSE_STATE_KEYS_DIR = os.path.join(SEATTLECLEARINGHOUSE_WEBSITE_
 # Custom Installer Builder instance, or that provided for the SensibilityTestbed.
 # For a guide to setting up your own CIB instance, see:
 #   https://seattle.poly.edu/wiki/CustomInstallerBuilderInstallation
-SEATTLECLEARINGHOUSE_INSTALLER_BUILDER_XMLRPC = "https://custombuilder.poly.edu/custom_install/xmlrpc/" # Default, currently no repy_v2 support
-#SEATTLECLEARINGHOUSE_INSTALLER_BUILDER_XMLRPC = "https://sensibilityclearinghouse.poly.edu/custominstallerbuilder/xmlrpc/" # SensibilityTestbed's CIB, which supports repy_v2 and thereby NAT traversal.
+# SEATTLECLEARINGHOUSE_INSTALLER_BUILDER_XMLRPC = "https://custombuilder.poly.edu/custom_install/xmlrpc/" # Default, currently no repy_v2 support
+SEATTLECLEARINGHOUSE_INSTALLER_BUILDER_XMLRPC = "https://sensibilityclearinghouse.poly.edu/custominstallerbuilder/xmlrpc/" # SensibilityTestbed's CIB, which supports repy_v2 and thereby NAT traversal.
 
 # Not currently used. This is left in for legacy installs
 # The directory where the base installers named seattle_linux.tgz, seattle_mac.tgz,
@@ -113,9 +113,9 @@ DATABASES = {
         # you can use django.db.backends.sqlite3 instead of mysql. If you
         # decide to do so, you can leave the other fields empty
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FILL_THIS_IN',
-        'USER': 'FILL_THIS_IN',
-        'PASSWORD': 'FILL_THIS_IN',
+        'NAME': 'clearinghouse',
+        'USER': 'clearinghouse',
+        'PASSWORD': 'clearinghouse',
         'HOST': '',
         'PORT': '',
     }
@@ -128,14 +128,14 @@ if DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
 
 # Make this unique, and don't share it with anybody.
 # Fill this in!
-SECRET_KEY = ''
+SECRET_KEY = 'clearinghouse'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

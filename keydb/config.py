@@ -5,7 +5,7 @@ access to the keydb should not have access to this file.
 """
 
 # Fill these in with the information needed to use the key database.
-dbuser = ""
-dbpass = ""
+dbuser = "keydb"
+dbpass = "keydb"
 dbname = "keydb"
 dbhost = "localhost"

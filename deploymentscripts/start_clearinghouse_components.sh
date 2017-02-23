@@ -28,7 +28,7 @@ REPY_RUNTIME_DIR="$CLEARINGHOUSE_DIR/../seattle"
 
 # PYTHONPATH takes the deployed clearinghouse's parent dir, and the path to 
 # the RepyV2 runtime.
-export PYTHONPATH="$CLEARINGHOUSE_DIR/..:$REPY_RUNTIME_DIR"
+export PYTHONPATH="$CLEARINGHOUSE_DIR/..:$REPY_RUNTIME_DIR:/home/ch/.virtualenvs/ch/lib/python2.7/site-packages"
 
 export DJANGO_SETTINGS_MODULE="clearinghouse.website.settings"
 

@@ -1,0 +1,581 @@
+{% extends "control/control_base.html" %}
+
+{% comment %}
+<Program>
+    control/help.html
+
+    <Author>
+        Originally by?:
+        Justin Samuel 2009
+
+        Modified:
+        Gaetano Pressimone 2012
+
+        <Purpose>
+            Django template file for the testbed clearinghouse's 'help' page.
+            This help page is for logged in users only.
+
+            <Extends>
+                control/control_base.html
+
+                <Stylesheet>
+                    common.css
+                    account.css
+                    help.css
+
+                    <Scripts>
+                        None
+
+                        <Template Variables>
+                            None
+
+                            {% endcomment %}
+
+                            {% block title %}
+                            Help - {{ TESTBED }} {{ CLEARINGHOUSE }}
+                            {% endblock title %}
+
+                            {% block style %}
+                            {{ block.super }}
+                            <link href="{{ MEDIA_URL }}css/help.css" rel="stylesheet" type="text/css"/>
+                            {% endblock style %}
+
+                            {% block nav_register_expe %}
+                            <td class="active"><a href="{% url 'registerexperiment' %}">Register Experiment</a></td>
+                            {% endblock nav_register_expe %}
+
+                            {% block content %}
+                            <div id="main">
+                                <div id="middle">
+                                    <h2> 1. Provide your basic information (all fields are mandatory) </h2>
+
+                                    <h3>Experiment name:</h3> <input type="text" name="Ename"><br>
+                                    <h3>Researcher name:</h3> <input type="text" name="Rname"><br>
+                                    <h3> Name and address of researcher&#39s home institution:</h3>  <input type="text"
+                                                                                                            name=""><br>
+                                    <h3> Researcher&#39s email address:</h3>  <input type="text" name=""><br>
+                                    <h3> Name of home institution&#39s IRB officer or contact person:</h3>  <input
+                                        type="text" name=""><br>
+                                    <h3>Email address of of home institution&#39s IRB officer or contact person:</h3>
+                                    <input type="text" name=""><br>
+
+                                    <h2> 2. Provide details of your experiment </h2>
+                                    <h3>A. What is the goal of your research experiment? What do you want to find
+                                        out?</h3> <input type="text" name=""><br>
+                                    <h3>B. What type(s) of smartphone sensors will you use (check all that apply)? A
+                                        list of available sensors may be found at: <a
+                                                href="https://sensibilitytestbed.com/projects/project/wiki/sensors">
+                                            Sensors</a></h3>
+                                    <form>
+                                        <ul>
+                                            <b>
+                                                <li>Battery</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> if_battery_present<br>
+                                                    <input type="checkbox" name="" value=""> battery_health<br>
+                                                    <input type="checkbox" name="" value=""> battery_level<br>
+                                                    <input type="checkbox" name="" value=""> battery_plug_type<br>
+                                                    <input type="checkbox" name="" value=""> battery_status<br>
+                                                    <input type="checkbox" name="" value=""> battery_technology<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access battery sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the battery data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For battery
+                                                                level <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these battery sensor data be used for? <input type="text"
+                                                                                                         name="">
+                                            <br><br><br>
+
+
+                                            <b>
+                                                <li>Bluetooth</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> bluetooth_state (if
+                                                    Bluetooth is enabled)<br>
+                                                    <input type="checkbox" name="" value=""> bluetooth_is_discovering
+                                                    (if the local Bluetooth adapter is currently in device discovery
+                                                    process)<br>
+                                                    <input type="checkbox" name="" value=""> scan_mode (if Bluetooth is
+                                                    connectable or discoverable)<br>
+                                                    <input type="checkbox" name="" value=""> local_address (hardware
+                                                    address of the local Bluetooth adapter)<br>
+                                                    <input type="checkbox" name="" value=""> local_name (visible device
+                                                    name)<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access bluetooth sensor data? Once every
+                                            <input type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the bluetooth data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For Bluetooth
+                                                                data <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these bluetooth sensor data be used for? <input type="text"
+                                                                                                           name=""> <br><br><br>
+
+
+                                            <b>
+                                                <li>Cellular
+                                            </b> (all return null if the device has no service plan)</li><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> network_roaming (returns
+                                                    true if the device is considered roaming on the current network, for
+                                                    GSM purposes)<br>
+                                                    <input type="checkbox" name="" value=""> cellID (details about <a
+                                                        href="https://en.wikipedia.org/wiki/Cell_ID"> cell ID</a>) <br>
+                                                    <input type="checkbox" name="" value=""> location_area_code<br>
+                                                    <input type="checkbox" name="" value=""> mobile_country_code (mobile
+                                                    country code, or MCC)<br>
+                                                    <input type="checkbox" name="" value=""> mobile_network_code (mobile
+                                                    network code, or MNC)<br>
+                                                    <input type="checkbox" name="" value=""> network_operator (returns
+                                                    the numeric name, MCC+MNC, of current registered operator. Note:
+                                                    MCC+MNC <a href="https://en.wikipedia.org/wiki/Mobile_country_code">
+                                                    identify a unique operator</a>) <br>
+                                                    <input type="checkbox" name="" value=""> network_operator_name
+                                                    (returns the alphabetic name of current registered operator)<br>
+                                                    <input type="checkbox" name="" value=""> network_type (returns the
+                                                    radio technology, or network type, currently in use on the
+                                                    device)<br>
+                                                    <input type="checkbox" name="" value=""> service_state (returns the
+                                                    state of cellular service: emergency call only, in service, out of
+                                                    service, or power off)<br>
+                                                    <input type="checkbox" name="" value=""> signal_strengths<br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access cellular sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the cellular data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For cellular
+                                                                data <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these cellular sensor data be used for? <input type="text"
+                                                                                                          name="">
+                                            <br><br><br>
+
+
+                                            <b>
+                                                <li>Location</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> location_providers
+                                                    (network/GPS/passive)<br>
+                                                    <input type="checkbox" name="" value=""> location_provider_enabled
+                                                    (check if one of the providers is enabled)<br>
+                                                    <input type="checkbox" name="" value=""> location<br>
+                                                    <input type="checkbox" name="" value=""> last_known_location<br>
+                                                    <input type="checkbox" name="" value=""> geocode (obtain a list of
+                                                    addresses for the given latitude and longitude)<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access location sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the location data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For location
+                                                                data <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these location sensor data be used for? <input type="text"
+                                                                                                          name="">
+                                            <br><br><br>
+
+
+                                            <b>
+                                                <li>Settings</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> airplane_mode<br>
+                                                    <input type="checkbox" name="" value=""> ringer_silent_mode<br>
+                                                    <input type="checkbox" name="" value=""> screen_on<br>
+                                                    <input type="checkbox" name="" value=""> max_media_volume<br>
+                                                    <input type="checkbox" name="" value=""> max_ringer_volume<br>
+                                                    <input type="checkbox" name="" value=""> media_volume<br>
+                                                    <input type="checkbox" name="" value=""> ringer_volume<br>
+                                                    <input type="checkbox" name="" value=""> screen_brightness<br>
+                                                    <input type="checkbox" name="" value=""> screen_timeout<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access settings sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the settings data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For settings
+                                                                data <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these settings sensor data be used for? <input type="text"
+                                                                                                          name="">
+                                            <br><br><br>
+
+
+                                            <b>
+                                                <li>Sensor</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> sensors (get the most
+                                                    recently recorded sensor data: accelerometer, magnetic and
+                                                    orientation)<br>
+                                                    <input type="checkbox" name="" value=""> sensors_accuracy<br>
+                                                    <input type="checkbox" name="" value=""> light (most recently
+                                                    received light value)<br>
+                                                    <input type="checkbox" name="" value=""> accelerometer (most
+                                                    recently received accelerometer value)<br>
+                                                    <input type="checkbox" name="" value=""> magnetometer (most recently
+                                                    received magnetic field value)<br>
+                                                    <input type="checkbox" name="" value=""> orientation (most recently
+                                                    received orientation value)<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access sensor sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the sensor data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For sensor
+                                                                data <input type="text" name="">, keep <input
+                                                                    type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these sensor data be used for? <input type="text" name="">
+                                            <br><br><br>
+
+                                            <b>
+                                                <li>Signal Strenght</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> signal_strengths<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access signalstrenght sensor data? Once every
+                                            <input type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the signalstrenght data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For
+                                                                signalstrenght data <input type="text" name="">, keep
+                                                                <input type="text" name=""> decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these signalstrenght sensor data be used for? <input
+                                                type="text" name=""> <br><br><br>
+
+                                            <b>
+                                                <li>Wifi</li>
+                                            </b><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="checkbox" name="" value=""> wifi_state (check WiFi
+                                                    state: whether it is enabled)<br>
+                                                    <input type="checkbox" name="" value=""> connectionInfo (information
+                                                    about the currently active access point)<br>
+                                                    <form>
+                                                        <ul>
+                                                            <input type="checkbox" name="" value=""> ip_address<br>
+                                                            <input type="checkbox" name="" value=""> link_speed<br>
+                                                            <input type="checkbox" name="" value=""> supplicant_state
+                                                            (scanning, associating, completed, etc.)<br>
+                                                            <input type="checkbox" name="" value=""> ssid<br>
+                                                            <input type="checkbox" name="" value=""> rssi (received
+                                                            signal strength indicator)
+                                                        </ul>
+                                                    </form>
+                                                    <input type="checkbox" name="" value=""> scan_results (list of
+                                                    access points found during the most recent WiFi scan: list of
+                                                    information similar to connectionInfo)<br><br>
+                                                </ul>
+                                            </form>
+
+                                            i. How often will you need to access wifi sensor data? Once every <input
+                                                type="text" name=""><br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">sec<br>
+                                                    <input type="radio" name="reason" value="">min<br>
+                                                    <input type="radio" name="reason" value="">hour<br>
+                                                    <input type="radio" name="reason" value="">Other<input type="text"
+                                                                                                           name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            ii. How precise do you need the wifi data to be?<br>
+                                            <form>
+                                                <ul>
+                                                    <input type="radio" name="reason" value="">Full precision<br>
+                                                    <input type="radio" name="reason" value="">Truncation allowed
+                                                    (numeric values only):<br>
+                                                    <form action="">
+                                                        <form>
+                                                            <ul>
+                                                                <input type="radio" name="reason" value="">For wifi data
+                                                                <input type="text" name="">, keep <input type="text"
+                                                                                                         name="">
+                                                                decimal points<br>
+                                                                <input type="radio" name="reason" value="">Add more<br>
+                                                            </ul>
+                                                        </form>
+                                                    </form>
+                                                    <input type="radio" name="reason" value="">A level of data precision
+                                                    that we currently do not support? Please elaborate:<input
+                                                        type="text" name=""><br><br>
+                                                </ul>
+                                            </form>
+
+                                            iii. What will these wifi sensor data be used for? <input type="text"
+                                                                                                      name="">
+                                            <br><br><br>
+
+                                            <b>
+                                                <li>Other
+                                            </b> : if you cannot find sensors that we support, please tell us
+                                            more:<input type="text" name=""></li><br>
+
+                                        </ul>
+                                    </form>
+                                    <h3>C. Using the sensors you identified above, what type(s) of sensor data will be
+                                        downloaded from participants&#39 devices?</h3> <input type="text" name=""><br>
+                                    <h3>D. How and where will you store and protect the collected data?</h3> <input
+                                        type="text" name=""><br><br>
+                                    <b>Please review the information you provided above. Would you like to edit the text
+                                        or revise any selections? [provide a summary page of 1-2]?
+                                        <form><input type="radio" name="reason" value="">Yes<input type="radio"
+                                                                                                   name="reason"
+                                                                                                   value="">No
+                                    </b></form>
+
+
+                                    <h2> 3. I have read and agree to the <a href=""> Terms of Use for Researchers</a>
+                                    </h2>
+                                    <form><input type="radio" name="reason" value="">Accept<input type="radio"
+                                                                                                  name="reason"
+                                                                                                  value="">Do not
+                                        accept</b></form>
+
+
+                                    <h2> 4. Complete your IRB (Institutional Review Board) application (visit this page
+                                        if you would like more info on IRBs [ <a href="">link to IRB general info</a>])
+                                    </h2>
+                                    <form><input type="radio" name="reason" value=""> Generate basic text for my IRB
+                                        application [ <a
+                                                href="https://accounts.google.com/ServiceLogin?service=wise&passive=1209600&continue=https://docs.google.com/document/d/1pLMGz2BL6ez_jFklLn3r9uABf4_u29_5AeIlfXmqbpM/edit&followup=https://docs.google.com/document/d/1pLMGz2BL6ez_jFklLn3r9uABf4_u29_5AeIlfXmqbpM/edit&ltmpl=docs#identifier">
+                                            link </a> to boilerplate text]]
+                                    </form>
+                                    <br>
+                                    Are you waiting for IRB approval from your institution? In the interim you may
+                                    experiment on the
+                                    Sensibility Testbed using your own device by visiting <a
+                                        href="https://sensibilitytestbed.com/projects/project">here</a> .
+
+                                    <h2> 5. My IRB approved my experiment and and I am ready to run it! </h2>
+                                    Once we document your IRB approval letter in our database, we will email you your
+                                    account information (username/password) as well as any other necessary information
+                                    needed to run your experiment.<br>
+                                    <a href="">Upload IRB approval</a>
+
+                                </div>
+                            </div>
+
+
+                            {% endblock content %}
