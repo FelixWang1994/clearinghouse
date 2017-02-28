@@ -54,7 +54,35 @@ class PubKeyField(forms.FileField):
     return pubkey
 
 
+class RegisterExperimentForm(forms.ModelForm):
+  exp_name = forms.CharField(label="Experiment name", error_messages={'required': 'Enter a experiment name'})
+  res_name = forms.CharField(label="Researcher name", error_messages={'required': 'Enter a researcher name'})
+  res_address = forms.CharField(label="Name and address of researcher’s home institution", error_messages={'required': 'Enter a Name and address of researcher’s home institution'})
+  res_email = forms.CharField(label="Researcher’s email address", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
+  irb = forms.CharField(label="Name of home institution’s IRB officer or contact person", error_messages={'required': 'Name of home institution’s IRB officer or contact person'})
+  irb_email = forms.CharField(label="Email address of of home institution’s IRB officer or contact person", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
+  goal = forms.CharField(label="What is the goal of your research experiment? What do you want to find out?",
+                           widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,
+                                                         'placeholder': 'Enter the goal of your Experiment'}),
+                           error_messages={'required': 'Enter the goal of your research experiment'},
+                           max_length=256)
 
+class RegisterExperimentSensorForm(forms.ModelForm):
+  sensor_select = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
+  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
+                   choices = F_CHOICES, initial='hour', required = True,)
+  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
+  usage_policy = forms.CharField(label='What will these sensor data be used for?',widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter how do you plan to use the collected data'}),max_length=512)
+
+
+class RegisterExperimentSensorAttributeForm(forms.ModelForm):
+    sa_select = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'sa collapsible'}))
+    P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
+    precision_choice = forms.ChoiceField(widget = forms.Select(),
+                     choices = P_CHOICES, required = False,)
+    precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
 
 
 class GeniUserCreationForm(DjangoUserCreationForm):
