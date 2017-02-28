@@ -2,7 +2,7 @@
 
 {% comment %}
 <Program>
-    control/help.html
+    control/registeranexperiment.html
 
     <Author>
         Originally by?:
@@ -13,7 +13,7 @@
         Eric Velazquez 2017
 
         <Purpose>
-            Django template file for the testbed clearinghouse's 'help' page.
+            Django template file for the testbed clearinghouse's 'register an experiment' page.
             This help page is for logged in users only.
 
             <Extends>
@@ -22,19 +22,28 @@
                 <Stylesheet>
                     common.css
                     account.css
-                    help.css
+                    
 
                     <Scripts>
-                        None
+                        register.js
 
                         <Template Variables>
-                            None
+                            form: 
+                            New experiment registration form. 
+
 
                             {% endcomment %}
 
                             {% block title %}
-                            Help - {{ TESTBED }} {{ CLEARINGHOUSE }}
+                            Experiment registration - {{ TESTBED }} {{ CLEARINGHOUSE }}
                             {% endblock title %}
+
+                            {% block script %}
+                            {{ block.super }}
+                                <!--<script type="text/javascript" src="{{MEDIA_URL}}scripts/register.js" charset="utf-8"></script>-->
+                                
+                                <!--<script type="text/javascript">$('.collapse').collapse();</script>-->
+                            {% endblock script %}
 
                             {% block style %}
                             {{ block.super }}
@@ -48,8 +57,56 @@
                             {% block content %}
                             <div id="main">
                                 <div id="middle">
-                                    <h2> 1. Provide your basic information (all fields are mandatory!!) </h2>
+                                   
+                                <form action="{% url 'registerexperiment' %}" method="post" enctype="multipart/form-data">
 
+                                    {% csrf_token %}
+
+                                    <h2> 1. Provide your basic information (all fields are mandatory!!) </h2>
+                                    <table class="login">
+                                        <tr title=' Create an Experiment name'>
+                                          <td class="key">{{ form.experimentname.label_tag }}</td>
+                                          <td class="value">{{ form.experimentname }}</td>
+                                          <td>{{ form.experimentname.errors }}</td>
+                                        </tr>
+                                        <tr title=' Create a Researcher name'>
+                                          <td class="key">{{ form.researchername.label_tag }}</td>
+                                          <td class="value">{{ form.researchername }}</td>
+                                          <td>{{ form.researchername.errors }}</td>
+                                        </tr>
+                                        <tr title='Reenter the password '>
+                                          <td class="key">{{ form.password2.label_tag }}</td>
+                                          <td class="value">{{ form.password2 }}</td>
+                                          <td>{{ form.password2.errors }}</td>
+                                        </tr>
+                                        <tr title='Enter the university or company you are affilated with '>
+                                          <td class="key">{{ form.affiliation.label_tag }}</td>
+                                          <td class="value">{{ form.affiliation }}</td>
+                                          <td>{{ form.affiliation.errors }}</td>
+                                        </tr>
+                                        <tr title='Enter the email address you would like associated with your username '>
+                                          <td class="key">{{ form.email.label_tag }}</td>
+                                          <td class="value">{{ form.email }}</td>
+                                          <td>{{ form.email.errors }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="key">{{ form.pubkey.label_tag }}</td>
+                                          <td class="value">{{ form.gen_upload_choice }}</td>
+                                          <td>{{ form.pubkey.errors }}</td>
+                                        </tr>
+                                          <tr id="uploadkey">
+                                            <td class="key"></td>
+                                              <td class="value">{{ form.pubkey }}</td>
+                                          </tr>
+                                        <tr>
+                                          <td class="key"></td>
+                                          <td class="value"><input type="submit" value="Register"/> <div id="loading_indicator">
+                                              <img src="{{ MEDIA_URL }}images/loading_indicator.gif"/>
+                                            </div></td>
+                                        </tr>
+                                      </table>
+
+<!--
                                     <h3>Experiment name:</h3> <input type="text" name="Ename"><br>
                                     <h3>Researcher name:</h3> <input type="text" name="Rname"><br>
                                     <h3> Name and address of researcher&#39s home institution:</h3>  <input type="text"
@@ -577,6 +634,6 @@
 
                                 </div>
                             </div>
-
+-->
 
                             {% endblock content %}
