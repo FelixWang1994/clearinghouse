@@ -61,50 +61,185 @@
                                 <form action="{% url 'registerexperiment' %}" method="post" enctype="multipart/form-data">
 
                                     {% csrf_token %}
+<div id="main">
+        <div id="middle">
 
-                                    <h2> 1. Provide your basic information (all fields are mandatory!!) </h2>
-                                    <table class="login">
-                                        <tr title=' Create an Experiment name'>
-                                          <td class="key">{{ form.experimentname.label_tag }}</td>
-                                          <td class="value">{{ form.experimentname }}</td>
-                                          <td>{{ form.experimentname.errors }}</td>
-                                        </tr>
-                                        <tr title=' Create a Researcher name'>
-                                          <td class="key">{{ form.researchername.label_tag }}</td>
-                                          <td class="value">{{ form.researchername }}</td>
-                                          <td>{{ form.researchername.errors }}</td>
-                                        </tr>
-                                        <tr title='Reenter the password '>
-                                          <td class="key">{{ form.password2.label_tag }}</td>
-                                          <td class="value">{{ form.password2 }}</td>
-                                          <td>{{ form.password2.errors }}</td>
-                                        </tr>
-                                        <tr title='Enter the university or company you are affilated with '>
-                                          <td class="key">{{ form.affiliation.label_tag }}</td>
-                                          <td class="value">{{ form.affiliation }}</td>
-                                          <td>{{ form.affiliation.errors }}</td>
-                                        </tr>
-                                        <tr title='Enter the email address you would like associated with your username '>
-                                          <td class="key">{{ form.email.label_tag }}</td>
-                                          <td class="value">{{ form.email }}</td>
-                                          <td>{{ form.email.errors }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td class="key">{{ form.pubkey.label_tag }}</td>
-                                          <td class="value">{{ form.gen_upload_choice }}</td>
-                                          <td>{{ form.pubkey.errors }}</td>
-                                        </tr>
-                                          <tr id="uploadkey">
-                                            <td class="key"></td>
-                                              <td class="value">{{ form.pubkey }}</td>
-                                          </tr>
-                                        <tr>
-                                          <td class="key"></td>
-                                          <td class="value"><input type="submit" value="Register"/> <div id="loading_indicator">
-                                              <img src="{{ MEDIA_URL }}images/loading_indicator.gif"/>
-                                            </div></td>
-                                        </tr>
-                                      </table>
+            <div id="intro">
+                Any researcher who would like to perform experiments using smartphone sensors may register on the Sensibility Testbed Clearinghouse site.
+            </div>
+
+            {% if messages %}
+                <div class="row">
+                    {% for message in messages %}
+                        <p {% if message.tags %} class="alert alert-success {{ message.tags }}" {% endif %}> {{ message }} </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div name="ExperimentRegistrationForm">
+                <form id="experiment" name="experiment" action="{% url 'registerexperiment' %}" onsubmit="return validate_experiment()"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!--{% if form.username.errors or form.password1.errors or form.password2.errors or form.affiliation.errors or form.email.errors or form.pubkey.errors %}-->
+                      <!--<p class="warning2">-->
+                      <!--Please correct the following:</p>-->
+                  <!--{% endif %}-->
+
+                  <!--{% if page_top_errors %}-->
+                      <!--<p class="warning">-->
+                          <!--{% for error in page_top_errors %}-->
+                            <!--{{ error }}-->
+                            <!--<br/>-->
+                          <!--{% endfor %}-->
+                      <!--</p>-->
+                  <!--{% endif %}-->
+
+                  <h1>Register your Experiment</h1>
+
+                  <ol name="BasicInfo" type="1">
+
+                      <li>Provide some basic information (all fields are mandatory):
+                          <div class="form-group">
+                              {{exp_form.name.label_tag}} {{exp_form.name}}
+                          </div>
+
+                          <div class="form-group">
+                              {{ exp_form.researcher_name.label_tag }} {{exp_form.researcher_name}}
+                          </div>
+
+                          <div class="form-group">
+                              {{ exp_form.researcher_address.label_tag }} {{ exp_form.researcher_address }}
+                          </div>
+
+                          <div class="form-group">
+                              {{ exp_form.researcher_email.label_tag }} {{ exp_form.researcher_email }}
+                          </div>
+
+                          <div class="form-group">
+                              {{ exp_form.irb_officer_name.label_tag }} {{ exp_form.irb_officer_name }}
+                          </div>
+
+                          <div class="form-group">
+                              {{ exp_form.irb_officer_email.label_tag }} {{ exp_form.irb_officer_email }}
+                          </div>
+                          <hr/>
+                      </li>
+                      <li name="ExperimentDetails">
+                          Provide details of your experiment
+                          <ol type="A">
+                              <li>
+                                  {{ exp_form.goal.label_tag }} {{ exp_form.goal }}
+                              </li>
+                              <li>
+              <strong>What type(s) of smartphone sensors will you use (check all that apply)?</strong><br/>
+              ( A list of available sensors may be found at: <a href="https://sensibilitytestbed.com/projects/project/wiki/sensors">https://sensibilitytestbed.com/projects/project/wiki/sensors</a>)<br/>
+                  <p><b style="color:red">*</b> Select <b>ATLEAST ONE</b> sensor from below:</p>
+                                  {% for sensor_dict,s_form in zipped_sensor_data %}
+                                      <div class="sensor" id=sensor-{{sensor_dict.sensor.0}}>
+
+                                          {{s_form.sensor_select}} {{s_form.sensor_select.label_tag}} {{s_form.sensor_select.errors}}
+                                          {{ s_form.sensor.as_hidden }}
+
+                                          <div class="panel panel-default sensor_atrributes collapse" id="sensorattr-{{sensor_dict.sensor.0}}">
+                        <div class="panel-body">
+                    <h4><b style="color:red">*</b> Select ATLEAST ONE checkbox from below</h4>
+                        <div>
+                            {% for sensor_att,sa_form in sensor_dict.zipped_sa_data %}
+                                {{ sa_form.sa_select }} {{ sa_form.sa_select.label_tag }}
+                                {{ sa_form.sensor_attribute.as_hidden }} <br/>
+
+                        {% if sensor_dict.sensor.1 == 'Location' %}
+                         <div id="precision_div-{{sensor_att.id}}" name="precision_div-{{sensor_att.id}}" class="collapse">
+                             <div class="panel panel-default form-group" {% if sensor_att.precision_flag == False %} style="display: none;" {% endif %}>
+                                <div class="row">
+                                <div class="col-md-3">{{ sa_form.precision_choice_loc.label_tag }}</div>
+                                <div class="col-md-3">
+        <label data-toggle="collapse" data-target="#{{ sa_form.precision.id_for_label }}" >
+        <input type="checkbox" name="{{ sa_form.precision_choice.html_name }}" value="truncate"/> Truncation allowed </label>
+        <div class="collapse" id="{{ sa_form.precision.id_for_label }}">
+            {{ sa_form.precision_choice_loc }}
+        </div>
+                            </div></div></div></div>
+                        {% else %}
+                        <div id="precision_div-{{sensor_att.0}}" name="precision_div-{{sensor_att.0}}" class="panel panel-default collapse" {% if sensor_att.2 == False %} style="display: none;" {% endif %}>
+                                                        <div class="row">
+                            <div class="col-md-3"><strong>Precision</strong></div>
+                            <div class="col-md-3">
+                                                        <input type="radio" name="{{ sa_form.precision_choice.html_name }}" value="full" /> Full precision
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label data-toggle="collapse" data-target="#{{ sa_form.precision.id_for_label }}">
+                                <input type="radio" name="{{ sa_form.precision_choice.html_name }}" value="truncate"/> Truncation allowed</label> <br/>
+                                                        <input type="number" min="1" step="1" class="col-sm-2 form-control input-sm collapse" id="{{ sa_form.precision.id_for_label }}" name="{{ sa_form.precision.html_name }}" placeholder="No. of Decimal points allowed">
+                                                    </div>
+                                                </div></div>
+                        {% endif %}
+                                              {% endfor %}
+                        </div>
+
+                                                  <div class="form-group">
+                                                      
+                                                      <div class="panel panel-default">
+                                                          <div class="panel-heading">Frequency</div>
+                              <div class="panel-body"><strong>How often will you need to access<b><i>'{{s_form.sensor.label}}'</i></b>sensor data?</strong>
+                                                          <div class="form-inline">
+                                                              <div class="form-group">
+                                                                  <b style="color:red">*</b>{{s_form.frequency.label}} {{s_form.frequency}}
+                                                              </div>
+                                                              <div class="form-group">
+                                                                  {{s_form.frequency_unit}}
+                                                              </div>
+                                                          </div>
+                                                          <div>
+                                                              {{ s_form.frequency_other.label_tag }} {{ s_form.frequency_other }}
+                                                          </div></div>
+                                                      </div>
+                                                          
+                                                      <div class="panel panel-default">
+                                                      <div class="panel-heading">Precision</div>
+                                                      <div class="panel-body"><strong>How precise do you need the<b><i>'{{s_form.sensor.label}}'</i></b>data to be?</strong><br/>
+                                                      <!--<label for="{{ s_form.precision_other.id_for_label }}">A level of data precision that we currently do not support? Please elaborate:</label>-->
+                                                      <!--<input type="text" class="form-control" name="{{ s_form.precision_other.html_name }}" id="{{ s_form.precision_other.id_for_label }}">-->
+                                                          {{ s_form.precision_other.label_tag }} {{ s_form.precision_other }}
+                                                  </div></div>
+                              
+                                  <div class="panel panel-default">
+                                                              <div class="panel-heading">Downloadable Data ?</div>
+                              <div class="panel-body"><b style="color:red">*</b>
+
+                                      {{ s_form.downloadable.label_tag }} {{ s_form.downloadable }}
+
+                              </div></div>
+                                                          
+                                                              <div class="panel panel-default">
+                                                              <div class="panel-heading">Usage Policy</div>
+                                                              <div class="panel-body">
+                                                                  {{ s_form.usage_policy.label_tag }} {{ s_form.usage_policy }}
+                                                          </div></div>
+                                                  </div>
+                                          </div>
+                                      </div></div>
+
+                                  {% endfor %}
+                                  {{exp_form.sensor_other.label_tag}} {{exp_form.sensor_other}}
+                              </li>
+
+                              <li>
+                                  {{exp_form.store_protect.label_tag}} {{exp_form.store_protect}}
+                              </li>
+                          </ol>
+                      </li>
+
+                      <li>
+                          <label><input type="checkbox" name="Agree" value="agree" required> I have read and agree to the <a href="">Terms of Use for Researchers</a></label>
+                      </li>
+                  </ol><hr/>
+                  <input type="submit" class="btn btn-primary btn-lg btn-block" value="Register my Experiment">
+              </form>
+          </div>
+
+        </div>
+    </div>
+
 
 <!--
                                     <h3>Experiment name:</h3> <input type="text" name="Ename"><br>
