@@ -118,6 +118,60 @@ class GeniUser(DjangoUser):
     return "GeniUser:%s" % (self.username)
 
 
+class Sensor(models.Model):
+
+  """
+  It is an Sensor abstact class so we can inherit in the child classes.
+  Abstract base classes are useful when you want to put some common information into a number of other models.
+  This class is defining the general Sensor data as the frequency, precission, goal...
+  """
+
+  # How frequently is this sensor data pulled/requested?
+  frequency = models.IntegerField(default=None, blank=True)
+
+  # Any level of frequency that we do not support?
+  frequency_other = models.CharField(max_length=512, default=None, blank=True)
+
+  # How precise
+  precision = models.IntegerField(default=None, blank=True)
+
+   # A level of precision for any of this sensor data that we do NOT support
+  precision_other = models.CharField(max_length=512, default=None, blank=True)
+
+  # What will the sensor data be used for?
+  goal = models.CharField(max_length=512, default=None, blank=True)
+
+  class meta:
+    #This model will then not be used to create any database table. Instead, when it is used as a base class for other models, its fields will be added to those of the child class.
+    abstract = True
+
+
+class BatterySensor(Sensor):
+  """
+    Model for Battery
+  """
+  
+  # if battery present?
+  if_present = models.BooleanField(default=False)
+  
+  # Need health status of battery?
+  battery_health = models.BooleanField(default=False)
+  
+  # Need level of battery?
+  battery_level = models.BooleanField(default=False)
+  
+  # Need plug type of battery?
+  battery_plug_type = models.BooleanField(default=False)
+  
+  # Need status of battery?
+  battery_status = models.BooleanField(default=False)
+  
+  # Need technology of battery?
+  battery_technology = models.BooleanField(default=False)
+
+
+
+
 
 
 
