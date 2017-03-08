@@ -121,6 +121,301 @@ class GeniUser(DjangoUser):
 
 
 
+class Experiment(models.Model):
+  """
+    Model of an experiment
+  """
+
+  # Name of the Experiment
+  expe_name = models.CharField(max_length=30)
+
+  # The user who submitted the form
+  geni_user = models.ForeignKey(GeniUser, db_index=True)
+
+  # Name of the researcher who carry out the experiment
+  researcher_name = models.CharField(max_length=30)
+
+  # Name and address of researcher’s home institution
+  researcher_institution_name = models.CharField(max_length=30)
+
+  # Email of the researcher
+  researcher_email = models.EmailField()
+
+  # Postal/Mail address of the researcher
+  researcher_address = models.CharField(max_length=64)
+
+  # Email Address of the Researcher's IRB officer
+  irb_officer_email = models.EmailField()
+
+  # The main goal of the experiment
+  goal = models.CharField(max_length=256)
+
+  # Other snesors we don't mention
+  other_sensor = models.CharField(max_length=256)
+
+  # Downloaded type of sensor data
+  sensor_data_type = models.CharField(max_length=256)
+
+  # How and where will you store and protect the collected data?
+  store_protect = models.CharField(max_length=512)
+
+  # # Sensor Data
+  # sensor = models.ForeignKey(Sensor, db_index=True)
+
+  # # Battery
+  # batter = models.ForeignKey(Battery, db_index=True)
+
+
+
+
+
+class Sensor(models.Model):
+  """
+  It is an Sensor abstact class so we can inherit in the child classes.
+  Abstract base classes are useful when you want to put some common information into a number of other models.
+  This class is defining the general Sensor data as the frequency, precission, goal...
+  """
+
+  # Which experiment requests this sensor?
+  expereiment_id = models.ForeignKey(Experiment, db_index=True);
+
+  # How frequently is this sensor data pulled/requested?
+  frequency = models.IntegerField(default=None, blank=True)
+
+  # Any level of frequency that we do not support?
+  frequency_other = models.CharField(max_length=512, default=None, blank=True)
+
+  # How precise
+  precision = models.IntegerField(default=None, blank=True)
+
+  # A level of precision for any of this sensor data that we do NOT support
+  precision_other = models.CharField(max_length=512, default=None, blank=True)
+
+  # What will the sensor data be used for?
+  goal = models.CharField(max_length=512, default=None, blank=True)
+
+  class meta:
+    # This model will then not be used to create any database table. Instead, when it is used as a base class for other models, its fields will be added to those of the child class.
+    abstract = True
+
+
+
+
+
+class Battery(Sensor):
+  """
+    Model for Battery
+  """
+
+  # If battery present?
+  battery_if_present = models.BooleanField(default=False)
+
+  # Need health status of battery?
+  battery_health = models.BooleanField(default=False)
+
+  # Need level of battery?
+  battery_level = models.BooleanField(default=False)
+
+  # Need plug type of battery?
+  battery_plug_type = models.BooleanField(default=False)
+
+  # Need status of battery?
+  battery_status = models.BooleanField(default=False)
+
+  # Need technology of battery?
+  battery_technology = models.BooleanField(default=False)
+
+
+
+
+
+class Bluetooth(Sensor):
+  """
+    Model for Bluetooth
+  """
+
+  # If bluetooth is enabled?
+  bluetooth_state = models.BooleanField(default=False)
+
+  # If the local Bluetooth adapter is currently in device discovery process?
+  bluetooth_is_discovering = models.BooleanField(default=False)
+
+  # If Bluetooth is connectable or discoverable
+  bluetooth_scan_mode = models.BooleanField(default=False)
+
+  # Need hardware address of the local Bluetooth adapter？
+  bluetooth_local_address = models.BooleanField(default=False)
+
+  # Need visible device name?
+  bluetooth_local_name = models.BooleanField(default=False)
+
+
+
+
+
+class Celluar(Sensor):
+  """
+    Model for Celluar
+  """
+  # Need to check if the device is roaming on the current network?
+  celluar_network_roaming = models.BooleanField(default=False)
+
+  # Need details about cell ID?
+  celluar_cellID = models.BooleanField(default=False)
+
+  # Need location area code?
+  celluar_location_area_code = models.BooleanField(default=False)
+
+  # Need mobile country code(MCC)?
+  celluar_mobile_country_code = models.BooleanField(default=False)
+
+  # Need mobile network code(MNC)?
+  celluar_mobile_network_code = models.BooleanField(default=False)
+
+  # Need the numeric name of current register operator, i.e. MCC+MNC?
+  celluar_network_operator = models.BooleanField(default=False)
+
+  # Need the alphabetic name of current register operator?
+  celluar_network_operator_name = models.BooleanField(default=False)
+
+  # Need the radio technology or network type currently in use on the device?
+  celluar_network_type = models.BooleanField(default=False)
+
+  # Need the state of celluar service: including emergency call only, in service, out of service, or power off
+  celluar_service_state = models.BooleanField(default=False)
+
+  # Need the signal strength?
+  celluar_signal_strengths = models.BooleanField(default=False)
+
+
+
+
+
+class Location(Sensor):
+  """
+    Model for Location
+  """
+  # Need location providers, including network, GPS, passive?
+  location_providers = models.BooleanField(default=False)
+
+  # Need location?
+  location = models.BooleanField(default=False)
+
+  # Need last known location?
+  location_last_known_location = models.BooleanField(default=False)
+
+  # Need geocode?
+  location_geocode = models.BooleanField(default=False)
+
+
+
+
+
+class Settings(Sensor):
+  """
+    Model for Settings
+  """
+  # Need airplane mode?
+  settings_airplane_mode = models.BooleanField(default=False)
+
+  # Need ringer_silent_mode?
+  settings_ringer_silent_mode = models.BooleanField(default=False)
+
+  # Need screen on?
+  settings_screen_on = models.BooleanField(default=False)
+
+  # Need max_media_volume?
+  settings_max_media_volume = models.BooleanField(default=False)
+
+  # Need max_ringer_volume?
+  settings_max_ringer_volume = models.BooleanField(default=False)
+
+  # Need media_volume?
+  settings_media_volume = models.BooleanField(default=False)
+
+  # Need ringer_volume?
+  settings_ringer_volume = models.BooleanField(default=False)
+
+  # Need screen brightness?
+  settings_screen_brightness = models.BooleanField(default=False)
+
+  # Need screen timeout?
+  settings_screen_tiemout = models.BooleanField(default=False)
+
+
+
+
+
+class ConcretSensor(Sensor):
+  """
+    Model for concret sensor
+  """
+  # Need sensors data?
+  concretSensors = models.BooleanField(default=False)
+
+  # Need sensors accuracy?
+  concretSensor_accuracy = models.BooleanField(default=False)
+
+  # Need most recently received light value?
+  concretSensor_light = models.BooleanField(default=False)
+
+  # Need most recently received accelerometer value?
+  concretSensor_acceleromoter = models.BooleanField(default=False)
+
+  # Need most recently received magnetic field value?
+  concretSensor_magnetometer = models.BooleanField(default=False)
+
+  # Need most recently received orientation value?
+  concretSensor_orientation = models.BooleanField(default=False)
+
+
+
+
+
+class Signal_strengths(Sensor):
+  """
+    Model for signal strengths
+  """
+  # Need signal strength?
+  signal_strength = models.BooleanField(default=False)
+
+
+
+
+
+class Wifi(Sensor):
+  """
+    Model for wifi
+  """
+  # Need wifi state?
+  Wifi_state = models.BooleanField(default=False)
+
+  # I think we may just ask for more detailed connectionInfo.
+  # # Need connectionInfo?
+  # Wifi_connectionInfo = models.BooleanField(default=False)
+
+  # Need ip_address?
+  Wifi_ip_address = models.BooleanField(default=False)
+
+  # Need link_speed?
+  Wifi_link_speed = models.BooleanField(default=False)
+
+  # Need supplicant state, (scanning, associating, completed, etc.)?
+  Wifi_supplicant_state = models.BooleanField(default=False)
+
+  # Need ssid?
+  Wifi_ssid = models.BooleanField(default=False)
+
+  # Need received signal strength indicator(rssi)?
+  Wifi_rssi = models.BooleanField(default=False)
+
+  # Need scan results?
+  Wifi_scan_results = models.BooleanField(default=False)
+
+
+
+
+
 class Node(models.Model):
   """
   Defines the Node model. A Node record represents an individual nodemanager.
