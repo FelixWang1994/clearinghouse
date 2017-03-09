@@ -70,8 +70,6 @@ from clearinghouse.website.control import interface
 
 from clearinghouse.website.html import forms
 
-from .forms import RegisterExperimentSensorForm
-
 from django.shortcuts import render
 
 from seattle.repyportability import *
@@ -1075,14 +1073,15 @@ def build_mac_installer(request, username):
 
 @login_required
 def registerexperiment(request):
-    """
-    <Purpose>
-        Show the Experiment Registration Form
-    <Returns>
-        An HTTP response object that represents the experiment registration page on
-        success.
-    """
-    # Obtain the context from the HTTP request.
+  """
+  <Purpose>
+      Show the Experiment Registration Form
+  <Returns>
+      An HTTP response object that represents the experiment registration page on
+      success.
+  """
+  # Obtain the context from the HTTP request.
+
   context_instance = RequestContext(request)
 
   try:
@@ -1093,12 +1092,12 @@ def registerexperiment(request):
   if request.method == 'POST':
       # create a form instance and populate it with data from the request:
       form = forms.RegisterExperimentSensorForm(request.POST)
-
+      
   # if a GET (or any other method) we'll create a blank form
   else:
       form = forms.RegisterExperimentSensorForm()
 
-  return render(request, 'registerexperiment.html', {'form': form})
+  return render(request, 'control/registerexperiment.html', {'form': form})
 
 
 

@@ -30,6 +30,8 @@ from clearinghouse.website.control.models import GeniUser
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
 import django.forms as forms
 
+
+
 from clearinghouse.common.exceptions import *
 from clearinghouse.common.util import validations
 from clearinghouse.website.control import interface
@@ -55,13 +57,16 @@ class PubKeyField(forms.FileField):
 
 
 class RegisterExperimentForm(forms.ModelForm):
-  exp_name = forms.CharField(label="Experiment name", error_messages={'required': 'Enter a experiment name'})
+
+  """ GLOBAL DATA """
+  exp_name = forms.CharField(label="AExperiment name", error_messages={'required': 'Enter a experiment name'})
   res_name = forms.CharField(label="Researcher name", error_messages={'required': 'Enter a researcher name'})
   res_address = forms.CharField(label="Name and address of researcher's home institution", error_messages={'required': 'Enter a Name and address of researchers home institution'})
   res_email = forms.CharField(label="Researcher's email address", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
   irb = forms.CharField(label="Name of home institution's IRB officer or contact person", error_messages={'required': 'Name of home institutions IRB officer or contact person'})
   irb_email = forms.CharField(label="Email address of of home institution's IRB officer or contact person", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
   goal = forms.CharField(label="What is the goal of your research experiment? What do you want to find out?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256)
+
 
 class RegisterExperimentSensorForm(forms.Form):
 
@@ -78,8 +83,9 @@ class RegisterExperimentSensorForm(forms.Form):
   precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
   s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256)
 
-  def __init__(self, *args):
-    
+
+
+
 
 
 
