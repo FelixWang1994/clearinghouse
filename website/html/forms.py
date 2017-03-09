@@ -56,10 +56,9 @@ class PubKeyField(forms.FileField):
     return pubkey
 
 
-class RegisterExperimentForm(forms.ModelForm):
+class RegisterExperimentForm(forms.Form):
 
-  """ GLOBAL DATA """
-  exp_name = forms.CharField(label="AExperiment name", error_messages={'required': 'Enter a experiment name'})
+  exp_name = forms.CharField(label="Experiment name", error_messages={'required': 'Enter a experiment name'})
   res_name = forms.CharField(label="Researcher name", error_messages={'required': 'Enter a researcher name'})
   res_address = forms.CharField(label="Name and address of researcher's home institution", error_messages={'required': 'Enter a Name and address of researchers home institution'})
   res_email = forms.CharField(label="Researcher's email address", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
@@ -68,9 +67,20 @@ class RegisterExperimentForm(forms.ModelForm):
   goal = forms.CharField(label="What is the goal of your research experiment? What do you want to find out?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256)
 
 
+class SensorListForm(forms.Form):
+  battery = forms.BooleanField(label = 'Battery sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  bluetooth = forms.BooleanField(label = 'Bluetooth sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  cellular = forms.BooleanField(label = 'Cellular sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  location = forms.BooleanField(label = 'Location sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  settings = forms.BooleanField(label = 'Settings sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  sensor = forms.BooleanField(label = 'Sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  signalstrenght = forms.BooleanField(label = 'SignalStrenght sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  wifi = forms.BooleanField(label = 'Wifi sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+
+
 class RegisterExperimentSensorForm(forms.Form):
 
-  sensor_select = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  
   frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
   F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
   frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
