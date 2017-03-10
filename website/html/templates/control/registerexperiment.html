@@ -56,8 +56,10 @@
 
                             {% block content %}
                             <div id="main">
+                                
                                 <div id="middle">
-                                   
+                                <h2> 1. Provide your basic information (all fields are mandatory) </h2><br>
+                                Any researcher who would like to perform experiments using smartphone sensors may register on the Sensibility Testbed Clearinghouse site.<br><br>
                                 <form action="{% url 'registerexperiment' %}" method="post">
 
                                     {% csrf_token %}

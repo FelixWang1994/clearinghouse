@@ -66,6 +66,63 @@ class RegisterExperimentForm(forms.Form):
   irb_email = forms.CharField(label="Email address of of home institution's IRB officer or contact person", widget=forms.EmailInput(attrs={'class': 'form-control','pattern': "(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"}), error_messages={'required': 'Enter an E-mail Address'})
   goal = forms.CharField(label="What is the goal of your research experiment? What do you want to find out?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256)
 
+  def clean_exp_name(self):
+    value = self.cleaned_data['exp_name']
+    try:
+      validations.validate_register_experiment_field(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return value
+
+  def clean_res_name(self):
+    value = self.cleaned_data['res_name']
+    try:
+      validations.validate_register_experiment_field(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return 
+
+  def clean_res_address(self):
+    value = self.cleaned_data['res_address']
+    try:
+      validations.validate_register_experiment_field(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return value
+
+  def clean_res_email(self):
+    value = self.cleaned_data['res_email']
+    try:
+      validations.validate_email(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return value
+
+  def clean_irb(self):
+    value = self.cleaned_data['irb']
+    try:
+      validations.validate_register_experiment_field(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return
+
+  def clean_irb_email(self):
+    value = self.cleaned_data['irb_email']
+    try:
+      validations.validate_email(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return value
+
+  def clean_res_goal(self):
+    value = self.cleaned_data['goal']
+    try:
+      validations.validate_register_experiment_field(value)
+    except ValidationError, err:
+      raise forms.ValidationError, str(err)
+    return
+
+
 
 class SensorListForm(forms.Form):
   battery = forms.BooleanField(label = 'Battery sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))

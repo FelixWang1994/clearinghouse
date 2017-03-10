@@ -55,6 +55,16 @@ EMAIL_VALID_REGEX = re.compile(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*
 AFFILIATION_MIN_LENGTH = 3
 AFFILIATION_MAX_LENGTH = 200
 
+def validate_register_experiment_field(field):
+  """
+  <Purpose>
+    Determine whether fields in the form are strings.
+  """
+  try:
+    assert_str(field)
+  except AssertionError:
+    raise ValidationError(str(field) + " must be a string.")
+  
 
 
 

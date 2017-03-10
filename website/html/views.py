@@ -1103,6 +1103,16 @@ def registerexperiment(request):
       signalstrenght_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
       wifi_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
 
+      if r_form.is_valid():
+        exp_name = r_form.cleaned_data['exp_name']
+        res_name = r_form.cleaned_data['res_name']
+        res_address = r_form.cleaned_data['res_address']
+        res_email = r_form.cleaned_data['res_email']
+        irb = r_form.cleaned_data['irb']
+        irb_email = r_form.cleaned_data['irb_email']
+        goal = r_form.cleaned_data['goal']
+          
+
       
   # if a GET (or any other method) we'll create a blank form
   else:
