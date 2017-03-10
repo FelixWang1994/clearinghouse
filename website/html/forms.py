@@ -125,14 +125,14 @@ class RegisterExperimentForm(forms.Form):
 
 
 class SensorListForm(forms.Form):
-  battery = forms.BooleanField(label = 'Battery sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  bluetooth = forms.BooleanField(label = 'Bluetooth sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  cellular = forms.BooleanField(label = 'Cellular sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  location = forms.BooleanField(label = 'Location sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  settings = forms.BooleanField(label = 'Settings sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  sensor = forms.BooleanField(label = 'Sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  signalstrenght = forms.BooleanField(label = 'SignalStrenght sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  wifi = forms.BooleanField(label = 'Wifi sensor', widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  battery = forms.BooleanField(label = 'Battery sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  bluetooth = forms.BooleanField(label = 'Bluetooth sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  cellular = forms.BooleanField(label = 'Cellular sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  location = forms.BooleanField(label = 'Location sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  settings = forms.BooleanField(label = 'Settings sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  sensor = forms.BooleanField(label = 'Sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  signalstrenght = forms.BooleanField(label = 'SignalStrenght sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  wifi = forms.BooleanField(label = 'Wifi sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
 
 
 class RegisterExperimentSensorForm(forms.Form):

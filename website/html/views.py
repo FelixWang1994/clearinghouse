@@ -72,6 +72,12 @@ from clearinghouse.website.html import forms
 
 from django.shortcuts import render
 
+# import the logging library
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 from seattle.repyportability import *
 add_dy_support(locals())
 
@@ -1111,6 +1117,10 @@ def registerexperiment(request):
         irb = r_form.cleaned_data['irb']
         irb_email = r_form.cleaned_data['irb_email']
         goal = r_form.cleaned_data['goal']
+
+      
+
+          
           
 
       
