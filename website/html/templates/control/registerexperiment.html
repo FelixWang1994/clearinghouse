@@ -63,7 +63,9 @@
                                 <form action="{% url 'registerexperiment' %}" method="post">
 
                                     {% csrf_token %}
-
+                                    {% for s in ret%}
+                                        sensor : {{s}}<br>
+                                    {%endfor%}
                                     {% for question in r_form %}
                                         {{question.label_tag}} {{ question }}<br>
                                     {% endfor %}

@@ -1095,28 +1095,52 @@ def registerexperiment(request):
   except LoggedInButFailedGetGeniUserError:
       return _show_failed_get_geniuser_page(request)
 
+  
+  sl =[] # Sensor list where we save if the sensor is checked as a YES or as a NO in the form.
+  fl =[] #List were we save all the sensors form.
+  ret =["aaaaaa"] #test list
   if request.method == 'POST':
+
       # create a form instance and populate it with data from the request:
       
-      r_form = forms.RegisterExperimentForm(request.POST)#glabal data form
-      sensorlist_form = forms.SensorListForm(request.POST)#form for the checkboxes of each sensor
-      battery_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      bluetooth_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      cellular_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      location_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      settings_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      sensor_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      signalstrenght_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
-      wifi_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    r_form = forms.RegisterExperimentForm(request.POST)#glabal data form
+    sensorlist_form = forms.SensorListForm(request.POST)#form for the checkboxes of each sensor
+    battery_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    bluetooth_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    cellular_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    location_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    settings_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    sensor_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    signalstrenght_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
+    wifi_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
 
-      if r_form.is_valid():
-        exp_name = r_form.cleaned_data['exp_name']
-        res_name = r_form.cleaned_data['res_name']
-        res_address = r_form.cleaned_data['res_address']
-        res_email = r_form.cleaned_data['res_email']
-        irb = r_form.cleaned_data['irb']
-        irb_email = r_form.cleaned_data['irb_email']
-        goal = r_form.cleaned_data['goal']
+    fl = [battery_form, bluetooth_form, cellular_form, location_form, settings_form, sensor_form, signalstrenght_form, wifi_form]
+
+    if r_form.is_valid():
+      ret.append("valid1")
+      exp_name = r_form.cleaned_data['exp_name']
+      res_name = r_form.cleaned_data['res_name']
+      res_address = r_form.cleaned_data['res_address']
+      res_email = r_form.cleaned_data['res_email']
+      irb = r_form.cleaned_data['irb']
+      irb_email = r_form.cleaned_data['irb_email']
+      goal = r_form.cleaned_data['goal']
+      sl.append(exp_name)
+    else:
+      ret.append("not valid1")
+
+    if sensorlist_form.is_valid():
+      ret.append("valid2")
+      sl = sensorlist_form.clean_data()
+      for index,sensor_dict in enumerate(sl):
+        for key, value in sensor_dict.items():
+          ret.append(key)
+    else:
+      ret.append("not valid2")
+
+
+
+
 
       
 
@@ -1137,7 +1161,7 @@ def registerexperiment(request):
       signalstrenght_form = forms.RegisterExperimentSensorForm() #form for each sensor
       wifi_form = forms.RegisterExperimentSensorForm() #form for each sensor
 
-  return render(request, 'control/registerexperiment.html', {'battery_form': battery_form,'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrenght_form': signalstrenght_form, 'wifi_form': wifi_form, 'r_form': r_form, 'sensorlist_form': sensorlist_form})
+  return render(request, 'control/registerexperiment.html', {'battery_form': battery_form,'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrenght_form': signalstrenght_form, 'wifi_form': wifi_form, 'r_form': r_form, 'sensorlist_form': sensorlist_form, 'ret': ret})
  
 
 

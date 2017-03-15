@@ -125,14 +125,33 @@ class RegisterExperimentForm(forms.Form):
 
 
 class SensorListForm(forms.Form):
-  battery = forms.BooleanField(label = 'Battery sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  bluetooth = forms.BooleanField(label = 'Bluetooth sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  cellular = forms.BooleanField(label = 'Cellular sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  location = forms.BooleanField(label = 'Location sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  settings = forms.BooleanField(label = 'Settings sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  sensor = forms.BooleanField(label = 'Sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  signalstrenght = forms.BooleanField(label = 'SignalStrenght sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
-  wifi = forms.BooleanField(label = 'Wifi sensor', required=False ,widget=forms.CheckboxInput(attrs={'class': 'sensors collapsible'}))
+  TRUE_FALSE_CHOICES = {
+    (True, "Yes"),
+    (False, "No")
+  }
+  battery = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Battery",  widget=forms.Select(), required=True)
+  bluetooth = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Bluetooth",  widget=forms.Select(), required=True)
+  cellular = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Cellular",  widget=forms.Select(), required=True)
+  location = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Location",  widget=forms.Select(), required=True)
+  settings = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Settings",  widget=forms.Select(), required=True)
+  sensor = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Sensor",  widget=forms.Select(), required=True)
+  signalstrenght = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Signal strenght",  widget=forms.Select(), required=True)
+  wifi = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Wifi",  widget=forms.Select(), required=True)
+
+  def is_valid(self):
+    return True
+  def clean_data(self):
+    battery = self.cleaned_data['battery']
+    bluetooth = self.cleaned_data['bluetooth']
+    cellular = self.cleaned_data['cellular']
+    location = self.cleaned_data['location']
+    settings = self.cleaned_data['settings']
+    sensor = self.cleaned_data['sensor']
+    signalstrenght = self.cleaned_data['signalstrenght']
+    wifi = self.cleaned_data['wifi']
+
+    return [{'battery': battery}, {'bluetooth': bluetooth}, {'cellular': cellular}, {'location': location}, {'settings': settings}, {'sensor': sensor}, {'signalstrenght': signalstrenght}, {'wifi': wifi}]
+
 
 
 class RegisterExperimentSensorForm(forms.Form):
