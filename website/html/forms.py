@@ -138,9 +138,10 @@ class SensorListForm(forms.Form):
   signalstrenght = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Signal strenght",  widget=forms.Select(), required=True)
   wifi = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Wifi",  widget=forms.Select(), required=True)
 
-  def is_valid(self):
-    return True
+
+
   def clean_data(self):
+    
     battery = self.cleaned_data['battery']
     bluetooth = self.cleaned_data['bluetooth']
     cellular = self.cleaned_data['cellular']

@@ -1114,9 +1114,9 @@ def registerexperiment(request):
     signalstrenght_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
     wifi_form = forms.RegisterExperimentSensorForm(request.POST) #form for each sensor
 
-    fl = [battery_form, bluetooth_form, cellular_form, location_form, settings_form, sensor_form, signalstrenght_form, wifi_form]
+    fl = [{'battery':battery_form}, {'bluetooth':bluetooth_form}, {'cellular':cellular_form}, {'location':location_form}, {'settings':settings_form}, {'sensor':sensor_form}, {'signal':signalstrenght_form}, {'wifi': wifi_form}]
 
-    if r_form.is_valid():
+    if r_form.is_valid(): #if r_form is valid save the data
       ret.append("valid1")
       exp_name = r_form.cleaned_data['exp_name']
       res_name = r_form.cleaned_data['res_name']
@@ -1126,32 +1126,57 @@ def registerexperiment(request):
       irb_email = r_form.cleaned_data['irb_email']
       goal = r_form.cleaned_data['goal']
       sl.append(exp_name)
-    else:
-      ret.append("not valid1")
 
-    if sensorlist_form.is_valid():
+    if sensorlist_form.is_valid():#if sensor list is valid chgeck which sensors the user wants to use.
       ret.append("valid2")
-      sl = sensorlist_form.clean_data()
-      for index,sensor_dict in enumerate(sl):
+      sl = sensorlist_form.clean_data()#returns a list of dictionaries saying if the sensor is used (True) or not (False)
+      i = 0 #index to remove from fl list.
+      for sensor_dict in sl:
         for key, value in sensor_dict.items():
-          ret.append(key)
-    else:
-      ret.append("not valid2")
-
-
-
-
-
+          if value == 'False': #if the user has checked this sensor as NO
+            fl.remove(fl[i]) #we remove the form from the list so we dont have to chgek the form.
+            #We dont need to increment i because we have deleted an element.
+          else:
+            i+=1 #increment i
       
-
-          
-          
-
-      
+      #Now we have in fl list the list of sensors that the user wants to use.
+      for form_dict in fl:
+        for name,form in form_dict.items():
+          ret.append(name)
+          if form.is_valid():#check if each sensor form is valid
+            #GET and SAVE DATA FROM FORM
+            #TO DO
+            if name == 'battery':
+              #save data into battery model
+              ret.append(name)
+            if name == 'bluetooth':
+              #save data into bluetooth model
+              ret.append(name)
+            if name == 'cellular':
+              #save data into cellular model
+              ret.append(name)
+            if name == 'location':
+              #save data into location model
+              ret.append(name)
+            if name == 'settings':
+              #save data into settings model
+              ret.append(name)
+            if name == 'sensor':
+              #save data into sensor model
+              ret.append(name)
+            if name == 'signalstrenght':
+              #save data into signalstrenght model
+              ret.append(name)
+            if name == 'wifi':
+              #save data into wifi model
+              ret.append(name)
+    
+   
   # if a GET (or any other method) we'll create a blank form
   else:
       r_form = forms.RegisterExperimentForm()
-      sensorlist_form = forms.SensorListForm()
+      sensorlist_form = forms.SensorListForm(initial={'battery': False, 'bluetooth': False, 'cellular': False, 'location': False, 'settings': False, 'sensor': False, 'signalstrenght': False, 'wifi': False
+        })
       battery_form = forms.RegisterExperimentSensorForm() #form for each sensor
       bluetooth_form = forms.RegisterExperimentSensorForm() #form for each sensor
       cellular_form = forms.RegisterExperimentSensorForm() #form for each sensor
