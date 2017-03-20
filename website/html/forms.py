@@ -171,11 +171,71 @@ class RegisterExperimentSensorForm(forms.Form):
   s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256)
 
 
+class BatteryForm(forms.Form):
+  if_battery_present = forms.BooleanField(label="if_battery_present")
+  battery_health = forms.BooleanField(label="battery_health")
+  battery_level = forms.BooleanField(label="battery_label")
+  battery_plug_type = forms.BooleanField(label="battery_plug_type")
+  battery_status = forms.BooleanField(label="battery_status")
+  battery_technology = forms.BooleanField(label="battery_technology")
+
+class BluetoothForm(forms.Form):
+  bluetooth_state = forms.BooleanField(label="bluetootyh_state (if Bluetooth is enabled")
+  bluetooth_is_discovering = forms.BooleanField(label="bluetooth_is_discovering (if the local Bluetooth adapter is currently in device discovery process)")
+  scan_mode = forms.BooleanField(label="scan_mode (if Bluetooth is connectable or discoverable")
+  local_address = forms.BooleanField(label="local_address (hardware address of the local Bluetooth adapter)")
+  local_name = forms.BooleanField(label="local_name (visible device name)")
+
+class CellularForm(forms.Form):
+  network_roaming = forms.BooleanField(label="network_roaming (returns true if the device is considered roaming on the current network, for GSM purposes)")
+  cellID = forms.BooleanField(label="cellID (details about  cell ID) ")
+  network_roaming = forms.BooleanField(label="location_area_code")
+  location_area_code = forms.BooleanField(label="mobile_country_code (mobile country code, or MCC)")
+  mobile_country_code = forms.BooleanField(label="mobile_network_code (mobile network code, or MNC)")
+  mobile_network_code = forms.BooleanField(label="network_operator (returns the numeric name, MCC+MNC, of current registered operator. Note: MCC+MNC  identify a unique operator) ")
+  network_operator = forms.BooleanField(label="network_operator_name (returns the alphabetic name of current registered operator)")
+  network_type = forms.BooleanField(label="network_type (returns the radio technology, or network type, currently in use on the device)")
+  service_state = forms.BooleanField(label="service_state (returns the state of cellular service: emergency call only, in service, out of service, or power off)")
+  signal_strengths = forms.BooleanField(label="signal_strengths")
+
+class LocationForm(forms.Form):
+  location_providers = forms.BooleanField(label="location_providers (network/GPS/passive)")
+  location_provider_enabled = forms.BooleanField(label="location_provider_enabled (check if one of the providers is enabled)")
+  location = forms.BooleanField(label="location")
+  last_known_location = forms.BooleanField(label="location")
+  geocode = forms.BooleanField(label="geocode (obtain a list of addresses for the given latitude and longitude)")
+
+class SettingsForm(forms.Form):
+  airplane_mode = forms.BooleanField(label="airplane_mode")
+  ringer_silent_mode = forms.BooleanField(label="ringer_silent_mode")
+  screen_on = forms.BooleanField(label="screen_on")
+  max_media_volume = forms.BooleanField(label="max_media_volume")
+  max_ringer_volume = forms.BooleanField(label="max_ringer_volume")
+  media_volume = forms.BooleanField(label="media_volume")
+  ringer_volume = forms.BooleanField(label="ringer_volume")
+  screen_brightness = forms.BooleanField(label="screen_brightness")
+  screen_timeout = forms.BooleanField(label="screen_timeout")
+
+class SensorForm(forms.Form):
+  sensor = fprms.BooleanField(label="sensors (get the most recently recorded sensor data: accelerometer, magnetic and orientation)")
+  sensors_accuracy = fprms.BooleanField(label="sensors_accuracy")
+  light = fprms.BooleanField(label="light (most recently received light value)")
+  accelerometer = fprms.BooleanField(label="accelerometer (most recently received accelerometer value)")
+  magnetoneter = fprms.BooleanField(label="magnetometer (most recently received magnetic field value)")
+  orientation = fprms.BooleanField(label="orientation (most recently received orientation value)")
+
+class SignalStrengthForm(forms.Form):
+  signal_strengths = forms.BooleanField(label="signal_strengths")
 
 
-
-
-
+class WifiForm(forms.Form):
+  wifi_state = forms.BooleanField(label="wifi_state (check WiFi state: whether it is enabled)")
+  ip_address = forms.BooleanField(label="ip_address")
+  link_speed = forms.BooleanField(label="link_speed")
+  supplicant_state = forms.BooleanField(label="supplicant_state (scanning, associating, completed, etc.)")
+  ssid = forms.BooleanField(label="ssid")
+  rssi = forms.BooleanField(label="rssi (received signal strength indicator)")
+  scan_results = forms.BooleanField(label="scan_results (list of access points found during the most recent WiFi scan: list of information similar to connectionInfo)")
 
 
 class GeniUserCreationForm(DjangoUserCreationForm):
