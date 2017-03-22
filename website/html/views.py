@@ -1105,14 +1105,29 @@ def registerexperiment(request):
       
     r_form = forms.RegisterExperimentForm(request.POST)#glabal data form
     
-    battery_form = forms.BatteryForm(request.POST) #form for each sensor frq/prec.
-    bluetooth_form = forms.BluetoothForm(request.POST) #form for each sensor frq/prec.
-    cellular_form = forms.CellularForm(request.POST) #form for each sensor frq/prec.
-    location_form = forms.LocationForm(request.POST) #form for each sensor frq/prec.
-    settings_form = forms.SettingsForm(request.POST) #form for each sensor frq/prec.
-    sensor_form = forms.SensorForm(request.POST) #form for each sensor frq/prec.
-    signalstrength_form = forms.SignalStrengthForm(request.POST) #form for each sensor frq/prec.
-    wifi_form = forms.WifiForm(request.POST) #form for each sensor frq/prec.
+    battery_form = forms.BatteryForm(request.POST) #form for each sensor.
+    battery_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    bluetooth_form = forms.BluetoothForm(request.POST) #form for each sensor.
+    bluetooth_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    cellular_form = forms.CellularForm(request.POST) #form for each sensor.
+    cellular_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    location_form = forms.LocationForm(request.POST) #form for each sensor.
+    location_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    settings_form = forms.SettingsForm(request.POST) #form for each sensor.
+    settings_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    sensor_form = forms.SensorForm(request.POST) #form for each sensor.
+    sensor_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    signalstrength_form = forms.SignalStrengthForm(request.POST) #form for each sensor.
+    signalstrength_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
+
+    wifi_form = forms.WifiForm(request.POST) #form for each sensor.
+    wifi_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
 
     fl = [{'battery':battery_form}, {'bluetooth':bluetooth_form}, {'cellular':cellular_form}, {'location':location_form}, {'settings':settings_form}, {'sensor':sensor_form}, {'signalstrength':signalstrength_form}, {'wifi': wifi_form}]
 
@@ -1125,7 +1140,7 @@ def registerexperiment(request):
       irb = r_form.cleaned_data['irb']
       irb_email = r_form.cleaned_data['irb_email']
       goal = r_form.cleaned_data['goal']
-      sl.append(exp_name)
+      
 
   
     for form_dict in fl:
@@ -1143,10 +1158,13 @@ def registerexperiment(request):
               battery_status = form.is_required('battery_status')
               battery_technology = form.is_required('battery_technology')
               ret.append("requiered")
-              ret.append(form.set_frequency())
-              #CHEK BOOLEN FIELDSS
+              
+              #CHECK GeneralAtributes
+              if battery_ga_form.is_valid():
+                ret.append(battery_ga_form.clean())
 
-          if name == 'bluetooth':
+
+          elif name == 'bluetooth':
             #save data into bluetooth model
             if form.is_required('bluetooth'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1158,7 +1176,7 @@ def registerexperiment(request):
               ret.append("requiered")
               #CHEK BOOLEN FIELDSS
 
-          if name == 'cellular':
+          elif name == 'cellular':
             #save data into cellular model
             if form.is_required('cellular'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1187,7 +1205,7 @@ def registerexperiment(request):
               ret.append("requiered")
               #CHEK BOOLEN FIELDSS
 
-          if name == 'settings':
+          elif name == 'settings':
             #save data into settings model
             if form.is_required('settings'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1203,7 +1221,7 @@ def registerexperiment(request):
               ret.append("requiered")
               #CHEK BOOLEN FIELDSS
 
-          if name == 'sensor':
+          elif name == 'sensor':
             #save data into sensor model
             if form.is_required('sensor'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1216,7 +1234,7 @@ def registerexperiment(request):
               ret.append("requiered")
               #CHEK BOOLEN FIELDSS
 
-          if name == 'signalstrength':
+          elif name == 'signalstrength':
             #save data into signalstrenght model
             if form.is_required('signalstrength'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1224,7 +1242,7 @@ def registerexperiment(request):
               ret.append("requiered")
               #CHEK BOOLEN FIELDSS
 
-          if name == 'wifi':
+          elif name == 'wifi':
             #save data into wifi model
             if form.is_required('wifi'):#check if the researcher wants to use this sensor
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
@@ -1241,16 +1259,32 @@ def registerexperiment(request):
   # if a GET (or any other method) we'll create a blank form
   else:
       r_form = forms.RegisterExperimentForm()
-      battery_form = forms.BatteryForm() #form for each sensor
-      bluetooth_form = forms.BluetoothForm() #form for each sensor
-      cellular_form = forms.CellularForm() #form for each sensor
-      location_form = forms.LocationForm() #form for each sensor
-      settings_form = forms.SettingsForm() #form for each sensor
-      sensor_form = forms.SensorForm() #form for each sensor
-      signalstrength_form = forms.SignalStrengthForm() #form for each sensor
-      wifi_form = forms.WifiForm() #form for each sensor
 
-  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form,'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
+      battery_form = forms.BatteryForm() #form for each sensor
+      battery_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      bluetooth_form = forms.BluetoothForm() #form for each sensor
+      bluetooth_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      cellular_form = forms.CellularForm() #form for each sensor
+      cellular_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      location_form = forms.LocationForm() #form for each sensor
+      location_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      settings_form = forms.SettingsForm() #form for each sensor
+      settings_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      sensor_form = forms.SensorForm() #form for each sensor
+      sensor_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      signalstrength_form = forms.SignalStrengthForm() #form for each sensor
+      signalstrength_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+      wifi_form = forms.WifiForm() #form for each sensor
+      wifi_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
+
+  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form, 'battery_ga_form': battery_ga_form, 'bluetooth_form': bluetooth_form, 'bluetooth_ga_form':bluetooth_ga_form, 'cellular_form': cellular_form, 'cellular_ga_form':cellular_ga_form, 'location_form': location_form, 'location_ga_form': location_ga_form, 'settings_form': settings_form, 'settings_ga_form': settings_ga_form, 'sensor_form': sensor_form, 'sensor_ga_form': sensor_ga_form, 'signalstrength_form': signalstrength_form, 'signalstrength_ga_form' : signalstrength_ga_form, 'wifi_form': wifi_form, 'wifi_ga_form': wifi_ga_form, 'r_form': r_form, 'ret': ret})
  
 
 

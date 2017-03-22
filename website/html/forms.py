@@ -80,7 +80,7 @@ class RegisterExperimentForm(forms.Form):
       validations.validate_register_experiment_field(value)
     except ValidationError, err:
       raise forms.ValidationError, str(err)
-    return 
+    return value
 
   def clean_res_address(self):
     value = self.cleaned_data['res_address']
@@ -104,7 +104,7 @@ class RegisterExperimentForm(forms.Form):
       validations.validate_register_experiment_field(value)
     except ValidationError, err:
       raise forms.ValidationError, str(err)
-    return
+    return value
 
   def clean_irb_email(self):
     value = self.cleaned_data['irb_email']
@@ -120,8 +120,24 @@ class RegisterExperimentForm(forms.Form):
       validations.validate_register_experiment_field(value)
     except ValidationError, err:
       raise forms.ValidationError, str(err)
-    return
+    return value
 
+
+class GeneralSensorAtributesForm(forms.Form):
+  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), initial = 1)
+  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
+  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
+                   choices = F_CHOICES, initial='hour')
+  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
+  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
+  precision_choice = forms.ChoiceField(widget = forms.Select(),choices = P_CHOICES, initial='full')
+  truncation = forms.IntegerField(label='If truncation, choose the number of decimals to keep', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required = False, initial = 1)
+  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
+  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
+
+  def clean(self):
+    data = super(GeneralSensorAtributesForm, self).clean()
+    return data
 
 
 class BatteryForm(forms.Form):
@@ -137,39 +153,15 @@ class BatteryForm(forms.Form):
   battery_status = forms.BooleanField(label="battery_status", required=False)
   battery_technology = forms.BooleanField(label="battery_technology", required=False)
 
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
-
   def is_required(self, v):
     value = self.cleaned_data[v]
     if value == 'True':
       return True
     return False
 
-  def set_frequency(self):
-    times = self.frequency
-    unit = self.cleaned_data['frequency_unit']
-    try:
-      validations.validate_sensor_frequency(times)
-    except ValidationError, err:
-      raise forms.ValidationError, str(err)
-    if unit == 'hour':
-      freq = times#/(60*60)
-    elif unit == 'min':
-      freq = times#/60 
-    else:
-      freq = times
-    return freq
 
   
+    
 
 class BluetoothForm(forms.Form):
   TRUE_FALSE_CHOICES = {
@@ -182,17 +174,6 @@ class BluetoothForm(forms.Form):
   scan_mode = forms.BooleanField(label="scan_mode (if Bluetooth is connectable or discoverable", required=False)
   local_address = forms.BooleanField(label="local_address (hardware address of the local Bluetooth adapter)", required=False)
   local_name = forms.BooleanField(label="local_name (visible device name)", required=False)
-
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
 
   def is_required(self, v):
@@ -221,17 +202,6 @@ class CellularForm(forms.Form):
   service_state = forms.BooleanField(label="service_state (returns the state of cellular service: emergency call only, in service, out of service, or power off)", required=False)
   signal_strengths = forms.BooleanField(label="signal_strengths", required=False)
 
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
-
   def is_required(self, v):
     value = self.cleaned_data[v]
     if value == 'True':
@@ -249,17 +219,6 @@ class LocationForm(forms.Form):
   location_data = forms.BooleanField(label="location", required=False)
   last_known_location = forms.BooleanField(label="last_known_location", required=False)
   geocode = forms.BooleanField(label="geocode (obtain a list of addresses for the given latitude and longitude)", required=False)
-
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
   def is_required(self, v):
     value = self.cleaned_data[v]
@@ -283,17 +242,6 @@ class SettingsForm(forms.Form):
   screen_brightness = forms.BooleanField(label="screen_brightness", required=False)
   screen_timeout = forms.BooleanField(label="screen_timeout", required=False)
 
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
-
   def is_required(self, v):
     value = self.cleaned_data[v]
     if value == 'True':
@@ -313,17 +261,6 @@ class SensorForm(forms.Form):
   magnetometer = forms.BooleanField(label="magnetometer (most recently received magnetic field value)", required=False)
   orientation = forms.BooleanField(label="orientation (most recently received orientation value)", required=False)
 
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
-
   def is_required(self, v):
     value = self.cleaned_data[v]
     if value == 'True':
@@ -337,17 +274,6 @@ class SignalStrengthForm(forms.Form):
   }
   signalstrength = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Signal Strength",  widget=forms.Select(), required = True, initial = False)
   signal_strengths = forms.BooleanField(label="signal_strengths", required=False)
-
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
   def is_required(self, v):
     value = self.cleaned_data[v]
@@ -369,17 +295,6 @@ class WifiForm(forms.Form):
   ssid = forms.BooleanField(label="ssid", required=False)
   rssi = forms.BooleanField(label="rssi (received signal strength indicator)", required=False)
   scan_results = forms.BooleanField(label="scan_results (list of access points found during the most recent WiFi scan: list of information similar to connectionInfo)", required=False)
-
-  frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), required=False)
-  F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
-  frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
-                   choices = F_CHOICES, initial='hour', required = False)
-  frequency_other = forms.CharField(label="Other:", required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Please provide any additional information that you would like'}))
-  P_CHOICES = (('full', 'Full Precision'),('truncate', 'Truncate'),)
-  precision_choice = forms.ChoiceField(widget = forms.Select(),
-             choices = P_CHOICES, required = False,)
-  precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
-  s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
   def is_required(self, v):
     value = self.cleaned_data[v]
