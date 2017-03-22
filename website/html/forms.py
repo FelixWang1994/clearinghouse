@@ -136,6 +136,7 @@ class GeneralSensorAtributesForm(forms.Form):
   s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
   def clean(self):
+    #Not working well, getting value of the last form.
     data = super(GeneralSensorAtributesForm, self).clean()
     return data
 
