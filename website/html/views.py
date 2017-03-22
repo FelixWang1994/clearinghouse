@@ -1095,7 +1095,7 @@ def registerexperiment(request):
   except LoggedInButFailedGetGeniUserError:
       return _show_failed_get_geniuser_page(request)
 
-  
+  username = user.username
   sl =[] # Sensor list where we save if the sensor is checked as a YES or as a NO in the form.
   fl =[] #List were we save all the sensors form.
   ret =["aaaaaa"] #test list
@@ -1132,34 +1132,110 @@ def registerexperiment(request):
       for name,form in form_dict.items():
         if form.is_valid():#check if each sensor form is valid
           ret.append(name)
-          if form.is_required():#check if the researcher wants to use this sensor
-            ret.append("requiered")
-            #GET and SAVE DATA FROM FORM
-            #TO DO
           if name == 'battery':
             #save data into battery model
-            ret.append(name)
+            if form.is_required('battery'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              if_battery_present = form.is_required('if_battery_present')
+              battery_health = form.is_required('battery_health')
+              battery_level = form.is_required('battery_level')
+              battery_plug_type = form.is_required('battery_plug_type')
+              battery_status = form.is_required('battery_status')
+              battery_technology = form.is_required('battery_technology')
+              ret.append("requiered")
+              ret.append(form.set_frequency())
+              #CHEK BOOLEN FIELDSS
+
           if name == 'bluetooth':
             #save data into bluetooth model
-            ret.append(name)
+            if form.is_required('bluetooth'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              bluetooth_state = form.is_required('bluetooth_state')
+              bluetooth_is_discovering = form.is_required('bluetooth_is_discovering')
+              scan_mode = form.is_required('scan_mode')
+              local_address = form.is_required('local_address')
+              local_name = form.is_required('local_name')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'cellular':
             #save data into cellular model
-            ret.append(name)
+            if form.is_required('cellular'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              network_roaming = form.is_required('network_roaming')
+              cellID = form.is_required('cellID')
+              location_area_code = form.is_required('location_area_code')
+              mobile_country_code = form.is_required('mobile_country_code')
+              mobile_network_code = form.is_required('mobile_network_code')
+              network_operator = form.is_required('network_operator')
+              network_operator_name = form.is_required('network_operator_name')
+              network_type = form.is_required('network_type')
+              service_state = form.is_required('service_state')
+              signal_strengths = form.is_required('signal_strengths')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'location':
             #save data into location model
-            ret.append(name)
+            if form.is_required('location'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              location_providers = form.is_required('location_providers')
+              location_provider_enabled = form.is_required('location_provider_enabled')
+              location_data = form.is_required('location_data')
+              last_known_location = form.is_required('last_known_location')
+              geocode = form.is_required('geocode')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'settings':
             #save data into settings model
-            ret.append(name)
+            if form.is_required('settings'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              airplane_mode = form.is_required('airplane_mode')
+              ringer_silent_mode = form.is_required('ringer_silent_mode')
+              screen_on = form.is_required('screen_on')
+              max_media_volume = form.is_required('max_media_volume')
+              max_ringer_volume = form.is_required('max_ringer_volume')
+              media_volume = form.is_required('media_volume')
+              ringer_volume = form.is_required('ringer_volume')
+              screen_brightness = form.is_required('screen_brightness')
+              screen_timeout = form.is_required('screen_timeout')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'sensor':
             #save data into sensor model
-            ret.append(name)
+            if form.is_required('sensor'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              sensor_data = form.is_required('sensor_data')
+              sensors_accuracy = form.is_required('sensors_accuracy')
+              light = form.is_required('light')
+              accelerometer = form.is_required('accelerometer')
+              magnetometer = form.is_required('magnetometer')
+              orientation = form.is_required('orientation') 
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'signalstrength':
             #save data into signalstrenght model
-            ret.append(name)
+            if form.is_required('signalstrength'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              signal_strengths = form.is_required('signal_strengths')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
+
           if name == 'wifi':
             #save data into wifi model
-            ret.append(name)
+            if form.is_required('wifi'):#check if the researcher wants to use this sensor
+              #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
+              wifi_state = form.is_required('wifi_state')
+              ip_address = form.is_required('ip_address')
+              link_speed = form.is_required('link_speed')
+              supplicant_state = form.is_required('supplicant_state')
+              ssid = form.is_required('ssid')
+              rssi = form.is_required('rssi')
+              ret.append("requiered")
+              #CHEK BOOLEN FIELDSS
     
    
   # if a GET (or any other method) we'll create a blank form
@@ -1174,7 +1250,7 @@ def registerexperiment(request):
       signalstrength_form = forms.SignalStrengthForm() #form for each sensor
       wifi_form = forms.WifiForm() #form for each sensor
 
-  return render(request, 'control/registerexperiment.html', {'battery_form': battery_form,'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
+  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form,'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
  
 
 
