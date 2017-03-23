@@ -1106,28 +1106,13 @@ def registerexperiment(request):
     r_form = forms.RegisterExperimentForm(request.POST)#glabal data form
     
     battery_form = forms.BatteryForm(request.POST) #form for each sensor.
-    battery_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     bluetooth_form = forms.BluetoothForm(request.POST) #form for each sensor.
-    bluetooth_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     cellular_form = forms.CellularForm(request.POST) #form for each sensor.
-    cellular_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     location_form = forms.LocationForm(request.POST) #form for each sensor.
-    location_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     settings_form = forms.SettingsForm(request.POST) #form for each sensor.
-    settings_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     sensor_form = forms.SensorForm(request.POST) #form for each sensor.
-    sensor_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     signalstrength_form = forms.SignalStrengthForm(request.POST) #form for each sensor.
-    signalstrength_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
-
     wifi_form = forms.WifiForm(request.POST) #form for each sensor.
-    wifi_ga_form = forms.GeneralSensorAtributesForm(request.POST) #form for general attributes
 
     fl = [{'battery':battery_form}, {'bluetooth':bluetooth_form}, {'cellular':cellular_form}, {'location':location_form}, {'settings':settings_form}, {'sensor':sensor_form}, {'signalstrength':signalstrength_form}, {'wifi': wifi_form}]
 
@@ -1158,11 +1143,8 @@ def registerexperiment(request):
               battery_status = form.is_required('battery_status')
               battery_technology = form.is_required('battery_technology')
               ret.append("requiered")
-              
-              #CHECK GeneralAtributes
-              if battery_ga_form.is_valid():
-                ret.append(battery_ga_form.clean())
-
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'bluetooth':
             #save data into bluetooth model
@@ -1174,7 +1156,8 @@ def registerexperiment(request):
               local_address = form.is_required('local_address')
               local_name = form.is_required('local_name')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'cellular':
             #save data into cellular model
@@ -1191,7 +1174,8 @@ def registerexperiment(request):
               service_state = form.is_required('service_state')
               signal_strengths = form.is_required('signal_strengths')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           if name == 'location':
             #save data into location model
@@ -1203,7 +1187,8 @@ def registerexperiment(request):
               last_known_location = form.is_required('last_known_location')
               geocode = form.is_required('geocode')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'settings':
             #save data into settings model
@@ -1219,7 +1204,8 @@ def registerexperiment(request):
               screen_brightness = form.is_required('screen_brightness')
               screen_timeout = form.is_required('screen_timeout')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'sensor':
             #save data into sensor model
@@ -1232,7 +1218,8 @@ def registerexperiment(request):
               magnetometer = form.is_required('magnetometer')
               orientation = form.is_required('orientation') 
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'signalstrength':
             #save data into signalstrenght model
@@ -1240,7 +1227,8 @@ def registerexperiment(request):
               #CHECK WHAT EXACTLY THE USER WANTS TO USE FROM THIS SENSOR
               signal_strengths = form.is_required('signal_strengths')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
 
           elif name == 'wifi':
             #save data into wifi model
@@ -1253,7 +1241,10 @@ def registerexperiment(request):
               ssid = form.is_required('ssid')
               rssi = form.is_required('rssi')
               ret.append("requiered")
-              #CHEK BOOLEN FIELDSS
+              #CHECK GENERAL ATRIBUTES
+              ret.append(form.show_data())
+
+
     
    
   # if a GET (or any other method) we'll create a blank form
@@ -1261,30 +1252,15 @@ def registerexperiment(request):
       r_form = forms.RegisterExperimentForm()
 
       battery_form = forms.BatteryForm() #form for each sensor
-      battery_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       bluetooth_form = forms.BluetoothForm() #form for each sensor
-      bluetooth_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       cellular_form = forms.CellularForm() #form for each sensor
-      cellular_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       location_form = forms.LocationForm() #form for each sensor
-      location_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       settings_form = forms.SettingsForm() #form for each sensor
-      settings_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       sensor_form = forms.SensorForm() #form for each sensor
-      sensor_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       signalstrength_form = forms.SignalStrengthForm() #form for each sensor
-      signalstrength_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
-
       wifi_form = forms.WifiForm() #form for each sensor
-      wifi_ga_form = forms.GeneralSensorAtributesForm() #form for general attributes
 
-  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form, 'battery_ga_form': battery_ga_form, 'bluetooth_form': bluetooth_form, 'bluetooth_ga_form':bluetooth_ga_form, 'cellular_form': cellular_form, 'cellular_ga_form':cellular_ga_form, 'location_form': location_form, 'location_ga_form': location_ga_form, 'settings_form': settings_form, 'settings_ga_form': settings_ga_form, 'sensor_form': sensor_form, 'sensor_ga_form': sensor_ga_form, 'signalstrength_form': signalstrength_form, 'signalstrength_ga_form' : signalstrength_ga_form, 'wifi_form': wifi_form, 'wifi_ga_form': wifi_ga_form, 'r_form': r_form, 'ret': ret})
+  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form, 'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form,'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
  
 
 

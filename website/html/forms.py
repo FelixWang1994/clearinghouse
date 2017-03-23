@@ -135,13 +135,14 @@ class GeneralSensorAtributesForm(forms.Form):
   precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
   s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
-  def clean(self):
-    #Not working well, getting value of the last form.
+  def show_data(self):
     data = super(GeneralSensorAtributesForm, self).clean()
     return data
 
 
-class BatteryForm(forms.Form):
+class BatteryForm(GeneralSensorAtributesForm):
+
+  #Generic fields will be inherited
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -159,12 +160,10 @@ class BatteryForm(forms.Form):
     if value == 'True':
       return True
     return False
-
-
   
     
 
-class BluetoothForm(forms.Form):
+class BluetoothForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -185,7 +184,7 @@ class BluetoothForm(forms.Form):
 
 
 
-class CellularForm(forms.Form):
+class CellularForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -209,7 +208,7 @@ class CellularForm(forms.Form):
       return True
     return False
 
-class LocationForm(forms.Form):
+class LocationForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -227,7 +226,7 @@ class LocationForm(forms.Form):
       return True
     return False
 
-class SettingsForm(forms.Form):
+class SettingsForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -249,7 +248,7 @@ class SettingsForm(forms.Form):
       return True
     return False
 
-class SensorForm(forms.Form):
+class SensorForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -268,7 +267,7 @@ class SensorForm(forms.Form):
       return True
     return False
 
-class SignalStrengthForm(forms.Form):
+class SignalStrengthForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -283,7 +282,7 @@ class SignalStrengthForm(forms.Form):
     return False
 
 
-class WifiForm(forms.Form):
+class WifiForm(GeneralSensorAtributesForm):
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
