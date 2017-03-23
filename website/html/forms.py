@@ -135,14 +135,21 @@ class GeneralSensorAtributesForm(forms.Form):
   precision_other = forms.CharField(label="A level of data precision that we currently do not support? Please elaborate:", required=False,widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Please provide any additional information that you would like'}))
   s_goal = forms.CharField(label="What will this sensor used for?",widget=forms.Textarea(attrs={'class': 'form-control', 'rows':1,'placeholder': 'Enter the goal of your Experiment'}),error_messages={'required': 'Enter the goal of your research experiment'}, max_length=256, required=False)
 
+  def is_required(self, v):
+    value = self.cleaned_data[v]
+    if value == 'True':
+      return True
+    return False
+
   def show_data(self):
     data = super(GeneralSensorAtributesForm, self).clean()
     return data
 
 
 class BatteryForm(GeneralSensorAtributesForm):
-
   #Generic fields will be inherited
+  prefix = 'battery'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -155,15 +162,12 @@ class BatteryForm(GeneralSensorAtributesForm):
   battery_status = forms.BooleanField(label="battery_status", required=False)
   battery_technology = forms.BooleanField(label="battery_technology", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-  
     
 
 class BluetoothForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'bluetooth'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -176,15 +180,12 @@ class BluetoothForm(GeneralSensorAtributesForm):
   local_name = forms.BooleanField(label="local_name (visible device name)", required=False)
 
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
-
+  
 
 class CellularForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'cellular'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -202,13 +203,10 @@ class CellularForm(GeneralSensorAtributesForm):
   service_state = forms.BooleanField(label="service_state (returns the state of cellular service: emergency call only, in service, out of service, or power off)", required=False)
   signal_strengths = forms.BooleanField(label="signal_strengths", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
 class LocationForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'location'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -220,13 +218,10 @@ class LocationForm(GeneralSensorAtributesForm):
   last_known_location = forms.BooleanField(label="last_known_location", required=False)
   geocode = forms.BooleanField(label="geocode (obtain a list of addresses for the given latitude and longitude)", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
 class SettingsForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'settings'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -242,13 +237,10 @@ class SettingsForm(GeneralSensorAtributesForm):
   screen_brightness = forms.BooleanField(label="screen_brightness", required=False)
   screen_timeout = forms.BooleanField(label="screen_timeout", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
 class SensorForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'sensor'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -261,13 +253,10 @@ class SensorForm(GeneralSensorAtributesForm):
   magnetometer = forms.BooleanField(label="magnetometer (most recently received magnetic field value)", required=False)
   orientation = forms.BooleanField(label="orientation (most recently received orientation value)", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
 class SignalStrengthForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'signalstrength'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -275,14 +264,11 @@ class SignalStrengthForm(GeneralSensorAtributesForm):
   signalstrength = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Signal Strength",  widget=forms.Select(), required = True, initial = False)
   signal_strengths = forms.BooleanField(label="signal_strengths", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
-
+  
 class WifiForm(GeneralSensorAtributesForm):
+  #Generic fields will be inherited
+  prefix = 'wifi'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -296,13 +282,7 @@ class WifiForm(GeneralSensorAtributesForm):
   rssi = forms.BooleanField(label="rssi (received signal strength indicator)", required=False)
   scan_results = forms.BooleanField(label="scan_results (list of access points found during the most recent WiFi scan: list of information similar to connectionInfo)", required=False)
 
-  def is_required(self, v):
-    value = self.cleaned_data[v]
-    if value == 'True':
-      return True
-    return False
-
-
+  
 class GeniUserCreationForm(DjangoUserCreationForm):
 
   affiliation = forms.CharField(error_messages={'required': 'Enter an Affiliation'})
