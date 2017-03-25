@@ -1091,9 +1091,9 @@ def registerexperiment(request):
   context_instance = RequestContext(request)
 
   try:
-      user = _validate_and_get_geniuser(request)
+    user = _validate_and_get_geniuser(request)
   except LoggedInButFailedGetGeniUserError:
-      return _show_failed_get_geniuser_page(request)
+    return _show_failed_get_geniuser_page(request)
 
   username = user.username
   sl =[] # Sensor list where we save if the sensor is checked as a YES or as a NO in the form.

@@ -228,39 +228,39 @@ class Bluetooth(Sensor):
   bluetooth_local_name = models.BooleanField(default=False)
 
 
-class Celluar(Sensor):
+class Cellular(Sensor):
   """
-    Model for Celluar
+    Model for Cellular
   """
   # Need to check if the device is roaming on the current network?
-  celluar_network_roaming = models.BooleanField(default=False)
+  cellular_network_roaming = models.BooleanField(default=False)
 
   # Need details about cell ID?
-  celluar_cellID = models.BooleanField(default=False)
+  cellular_cellID = models.BooleanField(default=False)
 
   # Need location area code?
-  celluar_location_area_code = models.BooleanField(default=False)
+  cellular_location_area_code = models.BooleanField(default=False)
 
   # Need mobile country code(MCC)?
-  celluar_mobile_country_code = models.BooleanField(default=False)
+  cellular_mobile_country_code = models.BooleanField(default=False)
 
   # Need mobile network code(MNC)?
-  celluar_mobile_network_code = models.BooleanField(default=False)
+  cellular_mobile_network_code = models.BooleanField(default=False)
 
   # Need the numeric name of current register operator, i.e. MCC+MNC?
-  celluar_network_operator = models.BooleanField(default=False)
+  cellular_network_operator = models.BooleanField(default=False)
 
   # Need the alphabetic name of current register operator?
-  celluar_network_operator_name = models.BooleanField(default=False)
+  cellular_network_operator_name = models.BooleanField(default=False)
 
   # Need the radio technology or network type currently in use on the device?
-  celluar_network_type = models.BooleanField(default=False)
+  cellular_network_type = models.BooleanField(default=False)
 
-  # Need the state of celluar service: including emergency call only, in service, out of service, or power off
-  celluar_service_state = models.BooleanField(default=False)
+  # Need the state of cellular service: including emergency call only, in service, out of service, or power off
+  cellular_service_state = models.BooleanField(default=False)
 
   # Need the signal strength?
-  celluar_signal_strengths = models.BooleanField(default=False)
+  cellular_signal_strengths = models.BooleanField(default=False)
 
 
 
@@ -274,7 +274,7 @@ class Location(Sensor):
   location_providers = models.BooleanField(default=False)
 
   # Need location?
-  location = models.BooleanField(default=False)
+  location_data = models.BooleanField(default=False)
 
   # Need last known location?
   location_last_known_location = models.BooleanField(default=False)

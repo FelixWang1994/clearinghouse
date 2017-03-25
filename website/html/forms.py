@@ -23,8 +23,15 @@
 
 
 from clearinghouse.website.control.models import GeniUser
+from clearinghouse.website.control.models import Battery
+from clearinghouse.website.control.models import Bluetooth
+from clearinghouse.website.control.models import Cellular
+from clearinghouse.website.control.models import Location
+from clearinghouse.website.control.models import Settings
+from clearinghouse.website.control.models import ConcretSensor
+from clearinghouse.website.control.models import Signal_strengths
+from clearinghouse.website.control.models import Wifi
 
-# from control.models import GeniUser, Sensor, SensorAttribute, ExperimentInfo, ExperimentSensor, ExperimentSensorAttribute
 
 
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
@@ -123,7 +130,7 @@ class RegisterExperimentForm(forms.Form):
     return value
 
 
-class GeneralSensorAtributesForm(forms.Form):
+class GeneralSensorAtributesForm(forms.ModelForm):
   frequency = forms.IntegerField(label='Once every', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}), initial = 1)
   F_CHOICES = (('hour', 'Hour'),('min', 'Min'),('sec', 'Sec'),)
   frequency_unit = forms.ChoiceField(widget = forms.Select(attrs={'class': 'form-control'}),
@@ -150,6 +157,10 @@ class BatteryForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'battery'
 
+  class Meta:
+    model = Battery
+    fields = '__all__'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -168,6 +179,10 @@ class BluetoothForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'bluetooth'
 
+  class Meta:
+    model = Bluetooth
+    fields = '__all__'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -185,6 +200,10 @@ class BluetoothForm(GeneralSensorAtributesForm):
 class CellularForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'cellular'
+
+  class Meta:
+    model = Cellular
+    fields = '__all__'
 
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
@@ -207,6 +226,10 @@ class LocationForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'location'
 
+  class Meta:
+    model = Location
+    fields = '__all__'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -221,6 +244,10 @@ class LocationForm(GeneralSensorAtributesForm):
 class SettingsForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'settings'
+
+  class Meta:
+    model = Settings
+    fields = '__all__'
 
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
@@ -241,6 +268,10 @@ class SensorForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'sensor'
 
+  class Meta:
+    model = ConcretSensor
+    fields = '__all__'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -257,6 +288,10 @@ class SignalStrengthForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'signalstrength'
 
+  class Meta:
+    model = Signal_strengths
+    fields = '__all__'
+
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
     (False, "No")
@@ -268,6 +303,10 @@ class SignalStrengthForm(GeneralSensorAtributesForm):
 class WifiForm(GeneralSensorAtributesForm):
   #Generic fields will be inherited
   prefix = 'wifi'
+
+  class Meta:
+    model = Wifi
+    fields = '__all__'
 
   TRUE_FALSE_CHOICES = {
     (True, "Yes"),
