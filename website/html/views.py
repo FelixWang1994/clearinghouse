@@ -1096,8 +1096,6 @@ def registerexperiment(request):
     return _show_failed_get_geniuser_page(request)
 
   username = user.username
-  sl =[] # Sensor list where we save if the sensor is checked as a YES or as a NO in the form.
-  fl =[] #List were we save all the sensors form.
   ret =["aaaaaa"] #test list
   if request.method == 'POST':
 
@@ -1260,7 +1258,7 @@ def registerexperiment(request):
       signalstrength_form = forms.SignalStrengthForm(prefix = 'signalstrength') #form for each sensor
       wifi_form = forms.WifiForm(prefix = 'wifi') #form for each sensor
 
-  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form, 'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form,'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
+  return render(request, 'control/registerexperiment.html', {'username' : username,'battery_form': battery_form, 'bluetooth_form': bluetooth_form, 'cellular_form': cellular_form, 'location_form': location_form, 'settings_form': settings_form, 'sensor_form': sensor_form, 'signalstrength_form': signalstrength_form, 'wifi_form': wifi_form, 'r_form': r_form, 'ret': ret})
  
 
 

@@ -23,6 +23,7 @@
 
 
 from clearinghouse.website.control.models import GeniUser
+from clearinghouse.website.control.models import Experiment
 from clearinghouse.website.control.models import Battery
 from clearinghouse.website.control.models import Bluetooth
 from clearinghouse.website.control.models import Cellular
@@ -33,7 +34,7 @@ from clearinghouse.website.control.models import Signal_strengths
 from clearinghouse.website.control.models import Wifi
 
 
-
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
 import django.forms as forms
 
@@ -63,7 +64,25 @@ class PubKeyField(forms.FileField):
     return pubkey
 
 
-class RegisterExperimentForm(forms.Form):
+class RegisterExperimentForm(forms.ModelForm):
+
+  class Meta:
+    model = Experiment
+    fields = '__all__'
+    labels = {
+      'expe_name': _('Experiment name:'),
+    }
+    help_texts = {
+
+    }
+    error_messages = {
+      'expe_name': _('required': 'Enter a experiment name')
+
+
+    }
+    widgets = {
+
+    }
 
   exp_name = forms.CharField(label="Experiment name", error_messages={'required': 'Enter a experiment name'})
   res_name = forms.CharField(label="Researcher name", error_messages={'required': 'Enter a researcher name'})
@@ -128,6 +147,8 @@ class RegisterExperimentForm(forms.Form):
     except ValidationError, err:
       raise forms.ValidationError, str(err)
     return value
+
+
 
 
 class GeneralSensorAtributesForm(forms.ModelForm):

@@ -63,52 +63,60 @@
                                 <form action="{% url 'registerexperiment' %}" method="post">
 
                                     {% csrf_token %}
-                                    {% for s in ret%}
+                                    {% for s in ret %}
                                         sensor : {{s}}<br>
                                     {%endfor%}
                                     {% for question in r_form %}
-                                        {{question.label_tag}} {{ question }}<br>
+                                        {{question.label_tag}} {{question}}<br>
                                     {% endfor %}
 
-                                    <br><br>{% for question in battery_form %}
-                                                {{ question }} {{question.label_tag}}<br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in battery_form %}
+                                        {{question.label_tag}}<br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in bluetooth_form %}
-                                                {{ question }} {{question.label_tag}}<br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in bluetooth_form %}
+                                        {{question.label_tag}}<br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in cellular_form %}
-                                               {{ question }} {{question.label_tag}}<br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in cellular_form %}
+                                       {{question.label_tag}}<br>
+                                    {% endfor %}
                                     <br><br>
 
 
-                                    <br><br>{% for question in location_form %}
-                                               {{ question }} {{question.label_tag}}<br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in location_form %}
+                                       {{question.label_tag}}<br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in settings_form %}
-                                                {{ question }} {{question.label_tag}} <br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in settings_form %}
+                                        {{question.label_tag}} <br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in sensor_form %}
-                                               {{ question }} {{question.label_tag}} <br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in sensor_form %}
+                                       {{question.label_tag}} <br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in signalstrength_form %}
-                                                {{ question }} {{question.label_tag}} <br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in signalstrength_form %}
+                                        {{question.label_tag}} <br>
+                                    {% endfor %}
                                     <br><br>
 
-                                    <br><br>{% for question in wifi_form %}
-                                                {{ question }} {{question.label_tag}} <br>
-                                            {% endfor %}
+                                    <br><br>
+                                    {% for question in wifi_form %}
+                                        {{question.label_tag}} <br>
+                                    {% endfor %}
                                     <br><br><br>
 
 
